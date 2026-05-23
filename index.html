@@ -200,13 +200,65 @@ body {
     .callout p { color: rgba(255,255,255,.82); margin-top: 14px; }
     .callout .button { background: #fff; color: var(--leaf-2); margin-top: 24px; }
 
+    .score-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(5, 1fr);
+      margin-top: 24px;
+    }
+    .score {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .score strong { display: block; font-size: 1.8rem; line-height: 1; }
+    .score span { color: var(--muted); display: block; font-size: .92rem; margin-top: 8px; }
+
+    .day-plan {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .day {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 74px 1fr;
+      padding: 18px;
+    }
+    .day strong {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 8px;
+      color: #fff;
+      display: inline-flex;
+      font-size: .92rem;
+      font-weight: 900;
+      height: 48px;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+    .day p { color: var(--muted); margin-top: 6px; }
+    .day ul { color: var(--muted); margin: 10px 0 0; padding-left: 18px; }
+
+    .risk-ladder {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 22px;
+    }
+    .risk-ladder .card { box-shadow: none; }
+
     footer { border-top: 1px solid var(--line); color: var(--muted); padding: 38px 0; }
     .sources li { margin-bottom: 8px; }
     code { background: rgba(23,33,28,.08); border-radius: 6px; padding: 2px 6px; }
 
     @media (max-width: 900px) {
       .shell { max-width: calc(100% - 32px); width: calc(100% - 32px); }
-      .section-head, .grid.two, .grid.three, .grid.four, .row, .meta-grid { grid-template-columns: 1fr; }
+      .section-head, .grid.two, .grid.three, .grid.four, .row, .meta-grid, .score-grid, .day-plan, .risk-ladder { grid-template-columns: 1fr; }
       .hero { min-height: auto; padding-top: 48px; }
       h1 { font-size: clamp(2.95rem, 14vw, 3.25rem); overflow-wrap: anywhere; }
       .lead { font-size: 1rem; max-width: 320px; }
@@ -242,6 +294,7 @@ body {
       <a href="#market">Market Scan</a>
       <a href="#recommendation">MVP</a>
       <a href="#prd">PRD</a>
+      <a href="#metrics">Metrics</a>
       <a href="#distribution">Distribution</a>
       <a href="#devil">Devil's Advocate</a>
       <a href="#next">Next Steps</a>
@@ -279,6 +332,17 @@ body {
           </ul>
         </div>
       </div>
+      <div class="callout" style="margin-top:22px">
+        <h3>Sharper thesis</h3>
+        <p>The product should not start as a restaurant marketplace. It should start as a trusted availability radar: structured daily supply from known local cooks, personalized by distance, diet, pickup window, and availability.</p>
+      </div>
+      <div class="score-grid">
+        <div class="score"><strong>60s</strong><span>Target time from craving to useful options.</span></div>
+        <div class="score"><strong>2 min</strong><span>Maximum seller effort to publish today's drop.</span></div>
+        <div class="score"><strong>1</strong><span>Initial wedge: one neighborhood + one strong community.</span></div>
+        <div class="score"><strong>0</strong><span>No private group scraping without explicit opt-in.</span></div>
+        <div class="score"><strong>30 days</strong><span>Validation window before building marketplace depth.</span></div>
+      </div>
     </section>
 
     <section id="personas" class="shell">
@@ -297,6 +361,7 @@ body {
             <li>Filters by cuisine, vegetarian/Jain/eggless, pickup time, distance.</li>
             <li>Wants fast trust signals: known community, ratings, repeat buyers.</li>
             <li>Needs sold-out status before messaging the seller.</li>
+            <li>Job to be done: replace dinner decision fatigue with a short trusted shortlist.</li>
           </ul>
         </article>
         <article class="card persona">
@@ -306,6 +371,7 @@ body {
             <li>Jain, vegan, no onion/garlic, nut-free, gluten-free, low spice.</li>
             <li>Needs confidence in ingredient disclosure.</li>
             <li>Will subscribe to alerts for matching drops.</li>
+            <li>Job to be done: avoid repetitive ingredient interrogation.</li>
           </ul>
         </article>
         <article class="card persona">
@@ -315,6 +381,7 @@ body {
             <li>Needs local onboarding: area, language, cuisine, family size.</li>
             <li>Values discovery more than discounts.</li>
             <li>Trusts community proof and referrals.</li>
+            <li>Job to be done: find the hidden neighborhood food network quickly.</li>
           </ul>
         </article>
         <article class="card persona">
@@ -324,6 +391,7 @@ body {
             <li>Needs a 2-minute way to post today's menu.</li>
             <li>Needs caps, waitlist, pickup instructions, and repeat buyer list.</li>
             <li>May start informal but needs a path to compliance.</li>
+            <li>Job to be done: sell out without becoming a full-time marketer.</li>
           </ul>
         </article>
         <article class="card persona">
@@ -333,6 +401,7 @@ body {
             <li>Needs radius expansion for special items.</li>
             <li>Benefits from pre-order drops and scarcity.</li>
             <li>Wants social sharing and sold-out proof.</li>
+            <li>Job to be done: create demand before cooking inventory.</li>
           </ul>
         </article>
         <article class="card persona">
@@ -342,6 +411,7 @@ body {
             <li>Needs opt-in digests and clean summaries.</li>
             <li>Can seed trust and seller discovery.</li>
             <li>May become the local ambassador.</li>
+            <li>Job to be done: keep community utility high and spam low.</li>
           </ul>
         </article>
       </div>
@@ -361,6 +431,32 @@ body {
         <div class="row"><div>Shef / CookEat marketplaces</div><div>Consumer-friendly browsing, chef profiles, pickup/delivery concepts.</div><div>Marketplace ops and compliance overhead are high; liquidity is hard neighborhood by neighborhood.</div></div>
         <div class="row"><div>WhatsApp/Facebook/Nextdoor groups</div><div>Already where supply and trust live.</div><div>No structured filters, no inventory, no universal search, high notification noise.</div></div>
         <div class="row"><div>SMS/WhatsApp concierge</div><div>Lowest friction for older sellers and busy buyers.</div><div>Needs careful automation so it does not become manual support forever.</div></div>
+      </div>
+      <div class="grid three" style="margin-top:22px">
+        <div class="card">
+          <h3>What to copy</h3>
+          <ul>
+            <li>Drop mechanics from seller tools: schedule, scarcity, sell-out proof.</li>
+            <li>Profile trust from marketplaces: photos, repeat buyers, ratings, badges.</li>
+            <li>Low-friction alerts from messaging: opt-in digest, not another feed.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What to avoid</h3>
+          <ul>
+            <li>Starting with payments, delivery, refunds, and support tickets.</li>
+            <li>Building a native app before proving daily/weekly retention.</li>
+            <li>Assuming public listings alone solve trust in prepared food.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Unfair wedge</h3>
+          <ul>
+            <li>Dietary precision: Jain, no onion/garlic, eggless, vegan, allergy flags.</li>
+            <li>Neighborhood density: Tracy and adjacent Bay Area communities first.</li>
+            <li>Community graph: known groups, temples, schools, referrals, admins.</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -390,6 +486,13 @@ body {
         <h3>Positioning</h3>
         <p>"The local food radar for home-cooked meals, tiffins, festival specials, and neighborhood food drops."</p>
         <p>Do not position as "Uber Eats for home cooks" initially. That invites regulatory, delivery, and marketplace expectations too early.</p>
+      </div>
+      <h3 style="margin:34px 0 14px">MVP Decision Scorecard</h3>
+      <div class="grid four">
+        <div class="card blue"><h3>Must have</h3><p>Seller opt-in, today's menu, distance, diet tags, price, pickup window, availability, contact path.</p></div>
+        <div class="card blue"><h3>Should have</h3><p>Digest personalization, sold-out toggle, seller profile, share card, admin moderation, repeat buyer signals.</p></div>
+        <div class="card blue"><h3>Later</h3><p>Payments, delivery, app, loyalty, subscriptions, catering marketplace, automated OCR ingestion.</p></div>
+        <div class="card blue"><h3>Hard no</h3><p>No anonymous prepared-food sellers, no private scraping, no delivery promise, no implied licensing guarantee.</p></div>
       </div>
     </section>
 
@@ -447,6 +550,37 @@ body {
         <div class="card blue"><h3>Buyer</h3><p>location radius, dietary preferences, cuisines, notification settings</p></div>
         <div class="card blue"><h3>Intent</h3><p>view, save, message, reserve, waitlist, purchase later</p></div>
       </div>
+      <h3 style="margin:34px 0 14px">Acceptance Criteria</h3>
+      <div class="grid three">
+        <div class="card"><h3>Buyer</h3><ul><li>Can see today's nearby options without joining any group.</li><li>Can filter by diet, distance, cuisine, pickup time, and availability.</li><li>Can contact or reserve from a listing in one tap.</li></ul></div>
+        <div class="card"><h3>Seller</h3><ul><li>Can publish a drop from phone in under 2 minutes.</li><li>Can mark few-left or sold-out without admin help.</li><li>Can reuse yesterday's menu and edit price/quantity.</li></ul></div>
+        <div class="card"><h3>Admin</h3><ul><li>Can approve sellers, correct listings, handle reports, and export demand data.</li><li>Can pause a seller if trust or compliance issues emerge.</li><li>Can send one clean digest per neighborhood.</li></ul></div>
+      </div>
+      <h3 style="margin:34px 0 14px">Operating Rules</h3>
+      <div class="grid two">
+        <div class="card warning"><h3>Trust and safety</h3><ul><li>Display compliance status as disclosed/verified, not assumed.</li><li>Require allergen and dietary disclaimers for every drop.</li><li>Use report flow for illness, misrepresentation, no-show, and payment disputes.</li><li>Keep seller contact visible only after buyer intent to reduce spam.</li></ul></div>
+        <div class="card warning"><h3>Regulatory posture</h3><ul><li>Discovery-first MVP; do not process payments until local rules are reviewed.</li><li>Separate cottage-food eligible items from prepared hot meals where required.</li><li>Badge sellers by disclosed permits, verified permits, or community-only status.</li><li>Never market as food-safety certified unless there is explicit verification.</li></ul></div>
+      </div>
+    </section>
+
+    <section id="metrics" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Metrics</p>
+        <div>
+          <h2>Measure liquidity and repeat behavior, not vanity signups.</h2>
+          <p>This idea only works if buyers repeatedly check it and sellers repeatedly update supply. Everything else is secondary.</p>
+        </div>
+      </div>
+      <div class="grid four">
+        <div class="card"><h3>Activation</h3><ul><li>Buyer saves location + diet preferences.</li><li>Seller publishes first drop.</li><li>Buyer clicks/message/reserves within 7 days.</li></ul></div>
+        <div class="card"><h3>Liquidity</h3><ul><li>Active sellers per day.</li><li>Listings per cuisine/diet/neighborhood.</li><li>Percent of listings updated before 4 PM.</li></ul></div>
+        <div class="card"><h3>Retention</h3><ul><li>Digest open 3+ days/week.</li><li>Buyer repeat intent within 14 days.</li><li>Seller posts 2+ consecutive weeks.</li></ul></div>
+        <div class="card"><h3>Quality</h3><ul><li>Sold-out accuracy.</li><li>Report rate per 100 intents.</li><li>Diet/allergen mismatch rate.</li></ul></div>
+      </div>
+      <div class="callout" style="margin-top:22px">
+        <h3>North star</h3>
+        <p>Weekly matched food intent: the number of buyer actions on listings that match location, diet, and availability. This keeps the team focused on useful matches rather than catalog size.</p>
+      </div>
     </section>
 
     <section id="distribution" class="shell">
@@ -490,6 +624,13 @@ body {
         <h3>Channel decision</h3>
         <p><strong>Use WhatsApp/SMS + web first.</strong> A native app should come only after there is repeated weekly usage and enough supply density. WhatsApp is the input and notification layer; web is the browsing and SEO layer; app is a later retention layer.</p>
       </div>
+      <h3 style="margin:34px 0 14px">Launch Playbook</h3>
+      <div class="grid four">
+        <div class="card"><h3>Community wedge</h3><p>Start with Tracy / Bay Area Indian, Jain, vegetarian, family, school, and temple networks where dietary specificity matters.</p></div>
+        <div class="card"><h3>Seller loop</h3><p>Give sellers share cards, sold-out screenshots, and a weekly demand report so they invite other sellers organically.</p></div>
+        <div class="card"><h3>Buyer loop</h3><p>Make each listing shareable: "look what is cooking today" should bring buyers back to the web catalog, not only to a chat.</p></div>
+        <div class="card"><h3>Admin loop</h3><p>Recruit trusted group admins as local curators. Their reward can be visibility, free featured placements, or neighborhood ambassador credit.</p></div>
+      </div>
     </section>
 
     <section id="devil" class="shell">
@@ -510,6 +651,8 @@ body {
             <li>Home cooks may not want another tool; they may prefer WhatsApp only.</li>
             <li>Buyers may browse but still order through personal relationships.</li>
             <li>Delivery expectations can inflate costs and complexity.</li>
+            <li>Supply may be too inconsistent for a daily habit unless sellers get repeated demand.</li>
+            <li>Group admins may see this as extracting value from their communities.</li>
           </ul>
         </div>
         <div class="card soft">
@@ -521,6 +664,35 @@ body {
             <li>Focus first on pre-order drops and pickup, not on-demand delivery.</li>
             <li>Pick one high-trust community and make it excellent.</li>
             <li>Measure repeat buyer behavior before adding app complexity.</li>
+            <li>Make admins partners, not bypassed gatekeepers.</li>
+            <li>Publish clear rules for prepared meals, allergens, pickup, refunds, and reporting.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="risk-ladder">
+        <div class="card warning">
+          <h3>Fatal risks</h3>
+          <ul>
+            <li>Compliance path is too restrictive for the chosen category.</li>
+            <li>Trust incident before reputation mechanics exist.</li>
+            <li>Cannot reach seller density in a single neighborhood.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Manageable risks</h3>
+          <ul>
+            <li>Seller onboarding takes handholding.</li>
+            <li>Menus are inconsistent or posted late.</li>
+            <li>Buyers prefer messaging over in-product checkout.</li>
+          </ul>
+        </div>
+        <div class="card soft">
+          <h3>Kill criteria</h3>
+          <ul>
+            <li>Fewer than 20 opt-in sellers after 30 days of direct outreach.</li>
+            <li>Fewer than 25% of buyers return weekly after two digest cycles.</li>
+            <li>Fewer than 10% of sellers post again after their first listing.</li>
+            <li>Legal/compliance ambiguity prevents responsible operation.</li>
           </ul>
         </div>
       </div>
@@ -530,19 +702,45 @@ body {
       <div class="section-head">
         <p class="eyebrow">Next Steps</p>
         <div>
-          <h2>30-day validation plan</h2>
-          <p>Do the smallest thing that proves people will check a daily local food radar and sellers will keep it updated.</p>
+          <h2>30-day day-by-day validation plan</h2>
+          <p>Replace vague weekly milestones with daily actions, measurable outputs, and clear decision gates.</p>
         </div>
       </div>
-      <div class="journey">
-        <div class="step"><div><h3>Week 1: Recruit</h3><p>Choose one neighborhood. Interview 10 buyers and 10 sellers. Build a seller spreadsheet and collect the first 15 menus manually.</p></div></div>
-        <div class="step"><div><h3>Week 2: Concierge Digest</h3><p>Send a daily WhatsApp/SMS digest to 50-100 buyers. Track which listings get clicks/messages and which sell out.</p></div></div>
-        <div class="step"><div><h3>Week 3: Web Catalog</h3><p>Launch a simple mobile web catalog with filters. Keep seller input manual or form-based. Do not build payments yet.</p></div></div>
-        <div class="step"><div><h3>Week 4: Seller Tools</h3><p>Add seller self-posting, sold-out toggles, and dietary tags. Decide whether the next phase is reservations or broader geography.</p></div></div>
+      <div class="day-plan">
+        <div class="day"><strong>Day 1</strong><div><h3>Pick the wedge</h3><p>Choose one launch area and one core community, for example Tracy Indian/Jain/vegetarian families.</p></div></div>
+        <div class="day"><strong>Day 2</strong><div><h3>Define taxonomy</h3><p>Lock cuisine, diet, allergen, pickup, radius, and availability tags. Keep the first version under 25 tags.</p></div></div>
+        <div class="day"><strong>Day 3</strong><div><h3>Interview buyers</h3><p>Talk to 10 buyers. Capture current groups used, last order, dietary filters, willingness to receive a digest.</p></div></div>
+        <div class="day"><strong>Day 4</strong><div><h3>Interview sellers</h3><p>Talk to 10 sellers. Capture posting workflow, capacity, pricing, pickup rules, trust concerns, and compliance status.</p></div></div>
+        <div class="day"><strong>Day 5</strong><div><h3>Compliance scan</h3><p>Document local food-sale constraints, cottage-food boundaries, disclosure language, and categories to avoid at MVP.</p></div></div>
+        <div class="day"><strong>Day 6</strong><div><h3>Build intake</h3><p>Create seller intake form and buyer preference form. Include opt-in language and no-private-scraping policy.</p></div></div>
+        <div class="day"><strong>Day 7</strong><div><h3>Recruit first sellers</h3><p>Secure 10 opt-in sellers and collect two sample drops each. Confirm photos, pickup areas, and contact preferences.</p></div></div>
+        <div class="day"><strong>Day 8</strong><div><h3>Create digest template</h3><p>Format one daily digest with menu, diet tags, price, distance, pickup window, few-left/sold-out status.</p></div></div>
+        <div class="day"><strong>Day 9</strong><div><h3>Launch buyer waitlist</h3><p>Invite 50-100 buyers from trusted channels. Do not overpromise delivery, payment, or coverage.</p></div></div>
+        <div class="day"><strong>Day 10</strong><div><h3>Send first digest</h3><p>Manually send the first WhatsApp/SMS/email-free digest. Track views, clicks, replies, and seller messages.</p></div></div>
+        <div class="day"><strong>Day 11</strong><div><h3>Measure friction</h3><p>Ask buyers what was missing before they could decide. Ask sellers what was annoying about updating availability.</p></div></div>
+        <div class="day"><strong>Day 12</strong><div><h3>Add availability status</h3><p>Introduce available, few left, sold out, preorder closed. Make it visible in the digest and catalog.</p></div></div>
+        <div class="day"><strong>Day 13</strong><div><h3>Add dietary matching</h3><p>Send a personalized digest variant for Jain/veg/no onion-garlic/vegan buyers.</p></div></div>
+        <div class="day"><strong>Day 14</strong><div><h3>Seller feedback loop</h3><p>Send sellers a simple demand report: views, messages, top filters, and whether they sold out.</p></div></div>
+        <div class="day"><strong>Day 15</strong><div><h3>Launch web catalog v0</h3><p>Publish a mobile web catalog with today's listings, filters, and contact/reserve intent. Keep backend manual if needed.</p></div></div>
+        <div class="day"><strong>Day 16</strong><div><h3>QR + share cards</h3><p>Create seller-specific share cards and QR flyers for temples, schools, apartment buildings, and community centers.</p></div></div>
+        <div class="day"><strong>Day 17</strong><div><h3>Community posts</h3><p>Post in approved Facebook/Nextdoor/community channels with admin consent. Frame it as a useful local directory.</p></div></div>
+        <div class="day"><strong>Day 18</strong><div><h3>Preference memory</h3><p>Let buyers save radius, diet, cuisine, and notification time. Use these preferences in the next digest.</p></div></div>
+        <div class="day"><strong>Day 19</strong><div><h3>Waitlist / reserve intent</h3><p>Add a lightweight reserve or waitlist action for drops with limited quantity. Keep payment offline.</p></div></div>
+        <div class="day"><strong>Day 20</strong><div><h3>Seller self-posting</h3><p>Let sellers post or duplicate a drop through form or WhatsApp bot. Admin reviews before publishing.</p></div></div>
+        <div class="day"><strong>Day 21</strong><div><h3>Density review</h3><p>Check whether each buyer segment sees at least 3 relevant options per week. If not, narrow or change wedge.</p></div></div>
+        <div class="day"><strong>Day 22</strong><div><h3>Trust layer</h3><p>Add seller profile, disclosed compliance status, repeat buyer count, rating prompt, and report link.</p></div></div>
+        <div class="day"><strong>Day 23</strong><div><h3>Special drop lane</h3><p>Test sweets, biryani, festival foods, cakes, and catering as higher-radius listings.</p></div></div>
+        <div class="day"><strong>Day 24</strong><div><h3>Radius experiment</h3><p>Compare normal meals within 5-10 miles versus specialty items up to 50 miles. Measure intent, not opinions.</p></div></div>
+        <div class="day"><strong>Day 25</strong><div><h3>Operations SOP</h3><p>Write the repeatable daily process: seller reminder, listing review, digest send, sold-out updates, incident handling.</p></div></div>
+        <div class="day"><strong>Day 26</strong><div><h3>Pricing signal</h3><p>Test seller willingness to pay for featured drops, demand reports, repeat buyer list, or premium listing tools.</p></div></div>
+        <div class="day"><strong>Day 27</strong><div><h3>Churn survey</h3><p>Ask inactive buyers and sellers why they stopped. Categorize into density, trust, timing, price, and friction.</p></div></div>
+        <div class="day"><strong>Day 28</strong><div><h3>Safety review</h3><p>Review reports, complaints, disclosure quality, and local compliance assumptions before scaling.</p></div></div>
+        <div class="day"><strong>Day 29</strong><div><h3>Go/no-go decision</h3><p>Compare metrics against kill criteria. Decide whether to continue, narrow wedge, or stop.</p></div></div>
+        <div class="day"><strong>Day 30</strong><div><h3>Next sprint memo</h3><p>Write the build plan for the next 30 days: automate ingestion, improve catalog, add reservations, or expand supply.</p></div></div>
       </div>
       <div class="callout" style="margin-top:22px">
         <h3>Decision gate</h3>
-        <p>Proceed only if at least 30% of buyers open the digest 3+ times/week, 20% click/message a listing weekly, and sellers update menus without handholding after week 3.</p>
+        <p>Proceed only if at least 30% of buyers open the digest 3+ times/week, 20% click/message a listing weekly, 10+ sellers post twice, and there are no unresolved trust/compliance blockers.</p>
       </div>
     </section>
 
@@ -568,7 +766,7 @@ body {
   </main>
 
   <footer>
-    <div class="shell">Generated for Mohit Jain - 2026-05-23. Local strategy artifact, not legal advice.</div>
+    <div class="shell">Version 2 generated for Mohit Jain - 2026-05-23. Local strategy artifact, not legal advice.</div>
   </footer>
 </body>
 </html>
