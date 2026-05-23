@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neighborhood Home Food Marketplace - PRD</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #647067;
+      --line: #dfe6dd;
+      --paper: #fbfaf5;
+      --card: #ffffff;
+      --leaf: #2f6f4f;
+      --leaf-2: #164734;
+      --saffron: #d9852a;
+      --mint: #e8f3eb;
+      --rose: #fff1ea;
+      --blue: #eef4ff;
+      --shadow: 0 22px 60px rgba(23, 33, 28, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(47,111,79,.10), transparent 32%),
+        linear-gradient(315deg, rgba(217,133,42,.10), transparent 34%),
+        var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--leaf-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { max-width: 1180px; width: calc(100% - 40px); margin: 0 auto; }
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      align-items: center;
+      padding: 72px 0 56px;
+      position: relative;
+    }
+    .eyebrow {
+      color: var(--saffron);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin: 0 0 18px;
+    }
+    h1, h2, h3 { line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(3.5rem, 8vw, 7.4rem); max-width: 980px; }
+    h2 { font-size: clamp(2rem, 4vw, 3.6rem); max-width: 860px; }
+    h3 { font-size: 1.35rem; }
+    p { margin: 0; }
+    .lead {
+      color: #435047;
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      max-width: 830px;
+      margin-top: 24px;
+      overflow-wrap: anywhere;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .button {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 999px;
+      color: #fff;
+      display: inline-flex;
+      font-weight: 800;
+      min-height: 48px;
+      padding: 0 20px;
+      text-decoration: none;
+    }
+    .button.secondary { background: #fff; border: 1px solid var(--line); color: var(--leaf-2); }
+    .meta-grid {
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 58px;
+    }
+    .meta-grid div { padding: 20px 22px 0 0; }
+    .meta-grid strong { display: block; font-size: 1.35rem; }
+    .meta-grid span { color: var(--muted); display: block; margin-top: 6px; }
+
+    nav {
+      backdrop-filter: blur(20px);
+      background: rgba(251,250,245,.78);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav .shell { display: flex; gap: 18px; overflow-x: auto; padding: 14px 0; }
+    nav a {
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
+    section { padding: 76px 0; }
+    .section-head { display: grid; gap: 18px; grid-template-columns: .36fr 1fr; margin-bottom: 34px; }
+    .section-head p:last-child { color: var(--muted); font-size: 1.05rem; max-width: 720px; }
+    .grid { display: grid; gap: 18px; }
+    .grid.two { grid-template-columns: repeat(2, 1fr); }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .grid.four { grid-template-columns: repeat(4, 1fr); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+    .card.soft { background: var(--mint); box-shadow: none; }
+    .card.warning { background: var(--rose); box-shadow: none; }
+    .card.blue { background: var(--blue); box-shadow: none; }
+    .card h3 { margin-bottom: 12px; }
+    .card p, .card li { color: var(--muted); }
+    .card ul { margin: 14px 0 0; padding-left: 18px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag {
+      background: rgba(47,111,79,.10);
+      border: 1px solid rgba(47,111,79,.16);
+      border-radius: 999px;
+      color: var(--leaf-2);
+      font-size: .8rem;
+      font-weight: 800;
+      padding: 6px 10px;
+    }
+
+    .persona { display: grid; gap: 14px; }
+    .persona .name { align-items: center; display: flex; gap: 12px; }
+    .avatar {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 999px;
+      color: white;
+      display: inline-flex;
+      font-weight: 900;
+      height: 42px;
+      justify-content: center;
+      width: 42px;
+    }
+    .quote {
+      border-left: 4px solid var(--saffron);
+      color: #3a463f;
+      font-size: 1.08rem;
+      margin-top: 14px;
+      padding-left: 14px;
+    }
+
+    .journey {
+      counter-reset: step;
+      display: grid;
+      gap: 14px;
+    }
+    .step {
+      align-items: start;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 52px 1fr;
+      padding: 18px;
+    }
+    .step:before {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 999px;
+      color: #fff;
+      content: counter(step);
+      counter-increment: step;
+      display: inline-flex;
+      font-weight: 900;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+
+    .matrix { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .row { display: grid; grid-template-columns: .8fr 1.2fr 1.2fr; }
+    .row > div { border-bottom: 1px solid var(--line); padding: 16px; }
+    .row:last-child > div { border-bottom: 0; }
+    .row.header { background: var(--leaf); color: #fff; font-weight: 900; }
+    .row:not(.header) > div:first-child { font-weight: 900; }
+
+    .callout {
+      background: var(--leaf-2);
+      border-radius: 8px;
+      color: #fff;
+      padding: 34px;
+    }
+    .callout p { color: rgba(255,255,255,.82); margin-top: 14px; }
+    .callout .button { background: #fff; color: var(--leaf-2); margin-top: 24px; }
+
+    footer { border-top: 1px solid var(--line); color: var(--muted); padding: 38px 0; }
+    .sources li { margin-bottom: 8px; }
+    code { background: rgba(23,33,28,.08); border-radius: 6px; padding: 2px 6px; }
+
+    @media (max-width: 900px) {
+      .shell { max-width: calc(100% - 32px); width: calc(100% - 32px); }
+      .section-head, .grid.two, .grid.three, .grid.four, .row, .meta-grid { grid-template-columns: 1fr; }
+      .hero { min-height: auto; padding-top: 48px; }
+      h1 { font-size: clamp(2.95rem, 14vw, 3.25rem); overflow-wrap: anywhere; }
+      .lead { font-size: 1rem; max-width: 320px; }
+      .hero-actions { display: grid; }
+      .button { justify-content: center; width: 100%; }
+      section { padding: 54px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero shell">
+    <div>
+      <p class="eyebrow">Product Strategy + PRD</p>
+      <h1>Neighborhood Home Food Discovery</h1>
+      <p class="lead">A WhatsApp-first, web-backed marketplace for discovering who is cooking nearby, what is available today, whether it fits your diet, how far it is, what it costs, and whether it is still available.</p>
+      <div class="hero-actions">
+        <a class="button" href="#recommendation">Recommended MVP</a>
+        <a class="button secondary" href="#prd">Product Requirements</a>
+      </div>
+      <div class="meta-grid">
+        <div><strong>Primary market</strong><span>Indian diaspora, dietary communities, busy families, local food hobbyists</span></div>
+        <div><strong>Best wedge</strong><span>Discovery + pre-order drops before full marketplace complexity</span></div>
+        <div><strong>Medium</strong><span>WhatsApp/SMS digest plus lightweight web catalog</span></div>
+        <div><strong>Big risk</strong><span>Food safety, supply fragmentation, and chicken-and-egg density</span></div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="shell">
+      <a href="#problem">Problem</a>
+      <a href="#personas">Personas</a>
+      <a href="#market">Market Scan</a>
+      <a href="#recommendation">MVP</a>
+      <a href="#prd">PRD</a>
+      <a href="#distribution">Distribution</a>
+      <a href="#devil">Devil's Advocate</a>
+      <a href="#next">Next Steps</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="problem" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">The Problem</p>
+        <div>
+          <h2>Food discovery is trapped inside noisy local channels.</h2>
+          <p>The current behavior is real: home cooks post daily menus in WhatsApp, Facebook, Nextdoor, temple groups, school groups, and private friend networks. Buyers want the food, but they do not want the monitoring burden.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Buyer pain</h3>
+          <ul>
+            <li>Menus are scattered across many groups and chats.</li>
+            <li>Availability changes quickly; good items sell out.</li>
+            <li>Dietary filters are manual: Jain, vegan, eggless, gluten-free, nut-free, spice level.</li>
+            <li>Distance, pickup windows, price, and order method are not normalized.</li>
+            <li>Newcomers do not know which groups or cooks exist.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Seller pain</h3>
+          <ul>
+            <li>Small food sellers rely on repeated self-promotion.</li>
+            <li>They cannot easily reach adjacent neighborhoods or new residents.</li>
+            <li>They manually handle DMs, counts, substitutions, pickup reminders, and sold-out updates.</li>
+            <li>Most cannot justify a full app, website, or delivery operation.</li>
+            <li>Trust depends on word-of-mouth instead of portable reputation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="personas" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Personas</p>
+        <div>
+          <h2>The product has to serve both sides without making either side change too much.</h2>
+          <p>The winning product is not another social feed. It is an availability layer over local food supply.</p>
+        </div>
+      </div>
+      <div class="grid three">
+        <article class="card persona">
+          <div class="name"><span class="avatar">BF</span><h3>Busy Family Buyer</h3></div>
+          <p class="quote">I need dinner options within 15 minutes that my family can actually eat.</p>
+          <ul>
+            <li>Filters by cuisine, vegetarian/Jain/eggless, pickup time, distance.</li>
+            <li>Wants fast trust signals: known community, ratings, repeat buyers.</li>
+            <li>Needs sold-out status before messaging the seller.</li>
+          </ul>
+        </article>
+        <article class="card persona">
+          <div class="name"><span class="avatar">DP</span><h3>Dietary Preference Buyer</h3></div>
+          <p class="quote">I do not want to ask every cook whether today's menu fits my constraints.</p>
+          <ul>
+            <li>Jain, vegan, no onion/garlic, nut-free, gluten-free, low spice.</li>
+            <li>Needs confidence in ingredient disclosure.</li>
+            <li>Will subscribe to alerts for matching drops.</li>
+          </ul>
+        </article>
+        <article class="card persona">
+          <div class="name"><span class="avatar">NR</span><h3>New Resident</h3></div>
+          <p class="quote">I just moved here. I do not know the WhatsApp groups or who cooks well.</p>
+          <ul>
+            <li>Needs local onboarding: area, language, cuisine, family size.</li>
+            <li>Values discovery more than discounts.</li>
+            <li>Trusts community proof and referrals.</li>
+          </ul>
+        </article>
+        <article class="card persona">
+          <div class="name"><span class="avatar">HC</span><h3>Home Cook Seller</h3></div>
+          <p class="quote">I cook well, but I do not want to become a marketer or support desk.</p>
+          <ul>
+            <li>Needs a 2-minute way to post today's menu.</li>
+            <li>Needs caps, waitlist, pickup instructions, and repeat buyer list.</li>
+            <li>May start informal but needs a path to compliance.</li>
+          </ul>
+        </article>
+        <article class="card persona">
+          <div class="name"><span class="avatar">SP</span><h3>Specialty Pop-up Seller</h3></div>
+          <p class="quote">For biryani, sweets, cakes, or festival food, people will drive farther.</p>
+          <ul>
+            <li>Needs radius expansion for special items.</li>
+            <li>Benefits from pre-order drops and scarcity.</li>
+            <li>Wants social sharing and sold-out proof.</li>
+          </ul>
+        </article>
+        <article class="card persona">
+          <div class="name"><span class="avatar">GA</span><h3>Group Admin / Community Connector</h3></div>
+          <p class="quote">I want useful food posts without my group turning into spam.</p>
+          <ul>
+            <li>Needs opt-in digests and clean summaries.</li>
+            <li>Can seed trust and seller discovery.</li>
+            <li>May become the local ambassador.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="market" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Market Scan</p>
+        <div>
+          <h2>Existing solutions prove demand, but most solve the wrong layer for this use case.</h2>
+          <p>The market splits into chef storefront tools, full marketplaces, and neighborhood/social channels. Your opportunity is the thin local discovery layer connecting fragmented supply to intent.</p>
+        </div>
+      </div>
+      <div class="matrix">
+        <div class="row header"><div>Pattern</div><div>What works</div><div>Gap we can exploit</div></div>
+        <div class="row"><div>Hotplate-style drops</div><div>Scheduled pre-orders, SMS alerts, prep lists, sell-out mechanics.</div><div>Great for sellers with an audience; weak for discovering unknown local sellers across communities.</div></div>
+        <div class="row"><div>Shef / CookEat marketplaces</div><div>Consumer-friendly browsing, chef profiles, pickup/delivery concepts.</div><div>Marketplace ops and compliance overhead are high; liquidity is hard neighborhood by neighborhood.</div></div>
+        <div class="row"><div>WhatsApp/Facebook/Nextdoor groups</div><div>Already where supply and trust live.</div><div>No structured filters, no inventory, no universal search, high notification noise.</div></div>
+        <div class="row"><div>SMS/WhatsApp concierge</div><div>Lowest friction for older sellers and busy buyers.</div><div>Needs careful automation so it does not become manual support forever.</div></div>
+      </div>
+    </section>
+
+    <section id="recommendation" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Recommendation</p>
+        <div>
+          <h2>Start WhatsApp-first, not app-first.</h2>
+          <p>A native app is the wrong first move. The behavior already lives in messaging. The MVP should aggregate and structure daily food drops, then give buyers a clean web view and personalized WhatsApp/SMS alerts.</p>
+        </div>
+      </div>
+      <div class="grid three">
+        <div class="card soft">
+          <h3>Buyer surface</h3>
+          <p>A mobile web page: "What's cooking near me today?" with filters for location, diet, cuisine, pickup time, price, and sold-out status.</p>
+        </div>
+        <div class="card soft">
+          <h3>Seller surface</h3>
+          <p>A WhatsApp/SMS bot or simple form: post menu, price, quantity, pickup window, dietary tags, photo, and location radius.</p>
+        </div>
+        <div class="card soft">
+          <h3>Discovery surface</h3>
+          <p>Daily personalized digest: "5 Jain/veg options within 8 miles today" plus urgent sold-out and new-seller alerts.</p>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:22px">
+        <h3>Positioning</h3>
+        <p>"The local food radar for home-cooked meals, tiffins, festival specials, and neighborhood food drops."</p>
+        <p>Do not position as "Uber Eats for home cooks" initially. That invites regulatory, delivery, and marketplace expectations too early.</p>
+      </div>
+    </section>
+
+    <section id="prd" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">PRD</p>
+        <div>
+          <h2>Product Requirements Document</h2>
+          <p>Working title: <strong>LocalPlate Radar</strong>. Goal: reduce daily discovery time from 15-30 minutes across chats to under 60 seconds.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Objective</h3>
+          <ul>
+            <li>Make local home-food availability searchable and personalized.</li>
+            <li>Give sellers lightweight demand capture without forcing them into a full storefront.</li>
+            <li>Build trust and compliance progressively, not as a blocker to discovery.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Non-goals for MVP</h3>
+          <ul>
+            <li>No delivery fleet.</li>
+            <li>No full payment marketplace at launch.</li>
+            <li>No scraping private WhatsApp groups without explicit seller/admin opt-in.</li>
+            <li>No anonymous sellers for prepared meals.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin:34px 0 14px">MVP Phases</h3>
+      <div class="journey">
+        <div class="step"><div><h3>Phase 0 - Concierge Validation</h3><p>Pick one geography and one community. Manually onboard 15 sellers and 100 buyers. Publish a daily WhatsApp digest and a simple web directory. Measure opens, clicks, messages, and sell-outs.</p></div></div>
+        <div class="step"><div><h3>Phase 1 - Structured Drops</h3><p>Sellers post via form or WhatsApp bot. Buyers browse a web catalog and subscribe to dietary/location alerts. Inventory status is manual but structured: available, few left, sold out.</p></div></div>
+        <div class="step"><div><h3>Phase 2 - Pre-order + Waitlist</h3><p>Add reservations, quantity caps, pickup windows, cancellation rules, and waitlist. Keep payment optional until compliance and dispute flows are clear.</p></div></div>
+        <div class="step"><div><h3>Phase 3 - Trust + Compliance</h3><p>Add seller verification, allergen disclosure, kitchen license/compliance badges where applicable, reviews, incident reporting, and repeat-buyer signals.</p></div></div>
+        <div class="step"><div><h3>Phase 4 - Marketplace Expansion</h3><p>Payments, delivery partners, premium seller tools, sponsored placement, festival bundles, catering requests, and cross-neighborhood discovery.</p></div></div>
+      </div>
+
+      <h3 style="margin:34px 0 14px">Functional Requirements</h3>
+      <div class="grid three">
+        <div class="card"><h3>Menu ingestion</h3><ul><li>Seller form</li><li>WhatsApp/SMS bot</li><li>Photo OCR later</li><li>Admin import for concierge phase</li></ul></div>
+        <div class="card"><h3>Search + filters</h3><ul><li>Distance/radius</li><li>Diet tags</li><li>Cuisine</li><li>Pickup time</li><li>Price/person</li><li>Availability</li></ul></div>
+        <div class="card"><h3>Seller profile</h3><ul><li>Name/photo</li><li>Neighborhood</li><li>Cuisines</li><li>Compliance badges</li><li>Ratings</li><li>Repeat buyer count</li></ul></div>
+        <div class="card"><h3>Alerts</h3><ul><li>Daily digest</li><li>New seller nearby</li><li>Diet match</li><li>Low quantity</li><li>Festival/special drops</li></ul></div>
+        <div class="card"><h3>Order intent</h3><ul><li>Message seller</li><li>Reserve quantity</li><li>Waitlist</li><li>Pickup instructions</li><li>Sold-out updates</li></ul></div>
+        <div class="card"><h3>Admin console</h3><ul><li>Approve sellers</li><li>Edit listings</li><li>Moderate reports</li><li>Track demand by neighborhood</li><li>Export seller leads</li></ul></div>
+      </div>
+
+      <h3 style="margin:34px 0 14px">Data Model</h3>
+      <div class="grid four">
+        <div class="card blue"><h3>Seller</h3><p>identity, neighborhood, contact, cuisines, compliance, trust score</p></div>
+        <div class="card blue"><h3>Drop</h3><p>date, menu items, price, quantity, pickup window, sold-out status</p></div>
+        <div class="card blue"><h3>Buyer</h3><p>location radius, dietary preferences, cuisines, notification settings</p></div>
+        <div class="card blue"><h3>Intent</h3><p>view, save, message, reserve, waitlist, purchase later</p></div>
+      </div>
+    </section>
+
+    <section id="distribution" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Distribution</p>
+        <div>
+          <h2>Win one neighborhood and one cuisine community before building broad marketplace machinery.</h2>
+          <p>The first distribution goal is not app installs. It is daily habit formation around "what is cooking today?"</p>
+        </div>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <h3>Supply acquisition</h3>
+          <ul>
+            <li>Start with 20-30 sellers from WhatsApp/Facebook/temple/school referrals.</li>
+            <li>Offer free landing page + weekly demand report.</li>
+            <li>Give sellers shareable "today's drop" cards.</li>
+            <li>Recruit one community ambassador per city/neighborhood.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Demand acquisition</h3>
+          <ul>
+            <li>WhatsApp community digest by neighborhood.</li>
+            <li>Nextdoor posts focused on discovery, not aggressive selling.</li>
+            <li>Facebook group posts: "today's home-cooked options near Tracy".</li>
+            <li>Temple/community center flyers with QR codes.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Retention loops</h3>
+          <ul>
+            <li>Personalized daily alert at 4 PM.</li>
+            <li>Friday/weekend special drops.</li>
+            <li>"Sold out in 42 minutes" proof for sellers.</li>
+            <li>Buyer preference memory: no onion/garlic, Jain, vegan, kid-friendly.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card warning" style="margin-top:22px">
+        <h3>Channel decision</h3>
+        <p><strong>Use WhatsApp/SMS + web first.</strong> A native app should come only after there is repeated weekly usage and enough supply density. WhatsApp is the input and notification layer; web is the browsing and SEO layer; app is a later retention layer.</p>
+      </div>
+    </section>
+
+    <section id="devil" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Devil's Advocate</p>
+        <div>
+          <h2>The idea is useful, but the hard parts are not UI.</h2>
+          <p>The risk is operational trust, not whether people want homemade food.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card warning">
+          <h3>Reasons it could fail</h3>
+          <ul>
+            <li>Local density is hard: buyers churn if there are not enough options nearby.</li>
+            <li>Prepared food regulation varies by county/state and can limit what sellers can legally sell.</li>
+            <li>Food safety incidents can damage trust quickly.</li>
+            <li>Home cooks may not want another tool; they may prefer WhatsApp only.</li>
+            <li>Buyers may browse but still order through personal relationships.</li>
+            <li>Delivery expectations can inflate costs and complexity.</li>
+          </ul>
+        </div>
+        <div class="card soft">
+          <h3>How to de-risk</h3>
+          <ul>
+            <li>Start as discovery + lead-gen, not payment marketplace.</li>
+            <li>Require seller opt-in and structured posting.</li>
+            <li>Use compliance badges instead of claiming all sellers are licensed.</li>
+            <li>Focus first on pre-order drops and pickup, not on-demand delivery.</li>
+            <li>Pick one high-trust community and make it excellent.</li>
+            <li>Measure repeat buyer behavior before adding app complexity.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="next" class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Next Steps</p>
+        <div>
+          <h2>30-day validation plan</h2>
+          <p>Do the smallest thing that proves people will check a daily local food radar and sellers will keep it updated.</p>
+        </div>
+      </div>
+      <div class="journey">
+        <div class="step"><div><h3>Week 1: Recruit</h3><p>Choose one neighborhood. Interview 10 buyers and 10 sellers. Build a seller spreadsheet and collect the first 15 menus manually.</p></div></div>
+        <div class="step"><div><h3>Week 2: Concierge Digest</h3><p>Send a daily WhatsApp/SMS digest to 50-100 buyers. Track which listings get clicks/messages and which sell out.</p></div></div>
+        <div class="step"><div><h3>Week 3: Web Catalog</h3><p>Launch a simple mobile web catalog with filters. Keep seller input manual or form-based. Do not build payments yet.</p></div></div>
+        <div class="step"><div><h3>Week 4: Seller Tools</h3><p>Add seller self-posting, sold-out toggles, and dietary tags. Decide whether the next phase is reservations or broader geography.</p></div></div>
+      </div>
+      <div class="callout" style="margin-top:22px">
+        <h3>Decision gate</h3>
+        <p>Proceed only if at least 30% of buyers open the digest 3+ times/week, 20% click/message a listing weekly, and sellers update menus without handholding after week 3.</p>
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Research Notes</p>
+        <div>
+          <h2>Sources used</h2>
+          <p>These sources informed the synthesis but are not copied as raw research.</p>
+        </div>
+      </div>
+      <ul class="sources">
+        <li><a href="https://www.hotplate.com/">Hotplate</a> - food drop storefront, SMS alerts, prep list, seller tooling.</li>
+        <li><a href="https://www.learn.hotplate.com/selling-out-drops">Hotplate: Selling out drops</a> - consistent schedules, hero products, repeat demand.</li>
+        <li><a href="https://homeplated.ai/">HomePlated</a> - SMS/WhatsApp-first home chef discovery concept.</li>
+        <li><a href="https://www.cookeatapp.com/">CookEat</a> - home chef marketplace and pickup model.</li>
+        <li><a href="https://shef.com/">Shef</a> - home-cooked meal marketplace positioning.</li>
+        <li><a href="https://business.nextdoor.com/en-us/small-business/resources/blog/how-local-businesses-can-use-nextdoor-groups-to-connect-with-the-community">Nextdoor Groups</a> - hyperlocal trust and business/community group mechanics.</li>
+        <li><a href="https://help.shef.com/en/articles/8092389-how-to-market-your-business-nextdoor">Shef: marketing on Nextdoor</a> - how home food sellers use neighborhood channels.</li>
+        <li>Reddit search snippets on tiffin services and local food groups - demand exists but acquisition and repetition are hard.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">Generated for Mohit Jain - 2026-05-23. Local strategy artifact, not legal advice.</div>
+  </footer>
+</body>
+</html>
