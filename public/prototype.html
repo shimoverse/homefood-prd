@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LocalPlate + Foodie Agent Prototype</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #66736b;
+      --line: #dfe6dd;
+      --paper: #fbfaf5;
+      --card: #ffffff;
+      --leaf: #2f6f4f;
+      --leaf-2: #164734;
+      --wa: #075e54;
+      --wa-2: #128c7e;
+      --saffron: #d9852a;
+      --mint: #e8f3eb;
+      --rose: #fff1ea;
+      --blue: #eef4ff;
+      --gold: #fff7df;
+      --shadow: 0 18px 50px rgba(23, 33, 28, .11);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(47,111,79,.10), transparent 32%),
+        linear-gradient(315deg, rgba(217,133,42,.10), transparent 34%),
+        var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+    a { color: var(--leaf-2); font-weight: 800; text-decoration: none; }
+    .shell { max-width: 1280px; width: calc(100% - 36px); margin: 0 auto; }
+    header { padding: 30px 0 20px; }
+    .topbar { align-items: center; display: flex; justify-content: space-between; gap: 16px; }
+    .eyebrow {
+      color: var(--saffron);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { line-height: 1.05; margin: 0; }
+    h1 { font-size: clamp(2.3rem, 5vw, 5.2rem); max-width: 880px; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.08rem; }
+    p { margin: 0; }
+    .lead { color: #435047; font-size: 1.08rem; margin-top: 16px; max-width: 760px; }
+    .layout {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 320px minmax(390px, 1fr) 380px;
+      padding: 16px 0 34px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+      padding: 18px;
+    }
+    .panel.soft { background: var(--mint); box-shadow: none; }
+    .panel.blue { background: var(--blue); box-shadow: none; }
+    .stack { display: grid; gap: 12px; }
+    label { color: var(--muted); display: grid; font-size: .86rem; font-weight: 800; gap: 6px; }
+    input, select, textarea {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font: inherit;
+      min-height: 42px;
+      padding: 10px 12px;
+      width: 100%;
+    }
+    textarea { min-height: 82px; resize: vertical; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 900;
+      padding: 7px 10px;
+      user-select: none;
+    }
+    .chip.active { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+    .button {
+      align-items: center;
+      background: var(--leaf);
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      font: inherit;
+      font-weight: 900;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+    }
+    .button.secondary { background: #fff; border: 1px solid var(--line); color: var(--leaf-2); }
+    .button.warn { background: var(--saffron); }
+    .iphone {
+      background: #0b0f0d;
+      border: 10px solid #0b0f0d;
+      border-radius: 42px;
+      box-shadow: 0 28px 80px rgba(23, 33, 28, .32);
+      margin: 0 auto;
+      max-width: 480px;
+      min-height: 780px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+    .island {
+      background: #000;
+      border-radius: 999px;
+      height: 26px;
+      left: 50%;
+      position: absolute;
+      top: 8px;
+      transform: translateX(-50%);
+      width: 112px;
+      z-index: 3;
+    }
+    .chat {
+      background: #efe7dc;
+      color: var(--ink);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 760px;
+      overflow: hidden;
+    }
+    .chat-head {
+      align-items: center;
+      background: var(--wa);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 42px 16px 12px;
+    }
+    .agent-title { align-items: center; display: flex; gap: 10px; }
+    .agent-avatar {
+      align-items: center;
+      background: #fff;
+      border-radius: 999px;
+      color: var(--wa);
+      display: inline-flex;
+      font-weight: 1000;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+    .status { color: rgba(255,255,255,.76); font-size: .82rem; }
+    .messages {
+      align-content: start;
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      padding: 18px;
+    }
+    .bubble {
+      border-radius: 16px;
+      max-width: 86%;
+      padding: 12px 14px;
+      white-space: pre-wrap;
+    }
+    .bubble.user { background: #dcf8c6; color: var(--ink); justify-self: end; }
+    .bubble.agent { background: #fff; color: var(--ink); justify-self: start; }
+    .bubble.system { background: rgba(7,94,84,.10); color: var(--leaf-2); justify-self: center; max-width: 96%; }
+    .bubble small { color: var(--muted); display: block; margin-top: 8px; }
+    .composer { background: #f7f3ee; border-top: 1px solid rgba(23,33,28,.10); display: grid; gap: 10px; padding: 12px; }
+    .quick-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .quick {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--wa);
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 800;
+      padding: 7px 10px;
+    }
+    .input-row { display: grid; gap: 8px; grid-template-columns: 1fr 92px; }
+    .surface-preview {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+    .map-strip {
+      background:
+        linear-gradient(90deg, rgba(47,111,79,.12) 0 48%, rgba(217,133,42,.12) 48% 100%),
+        #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+    }
+    .route {
+      align-items: center;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 32px 1fr 32px;
+    }
+    .pin {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 999px;
+      color: #fff;
+      display: inline-flex;
+      font-size: .78rem;
+      font-weight: 1000;
+      height: 32px;
+      justify-content: center;
+      width: 32px;
+    }
+    .pin.orange { background: var(--saffron); }
+    .route-line {
+      border-top: 3px dashed rgba(23,33,28,.28);
+      height: 1px;
+    }
+    .draft {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: .9rem;
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+    .source-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .source-row {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 4px;
+      padding: 10px;
+    }
+    .source-row span { color: var(--muted); font-size: .82rem; }
+    .site-preview {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .site-bar {
+      align-items: center;
+      background: var(--leaf-2);
+      color: #fff;
+      display: flex;
+      font-size: .82rem;
+      font-weight: 900;
+      justify-content: space-between;
+      padding: 10px 12px;
+    }
+    .site-body { display: grid; gap: 10px; padding: 12px; }
+    .mini-field {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: .82rem;
+      padding: 9px;
+    }
+    .agent-log {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow: auto;
+      padding: 10px;
+    }
+    .log-line { border-left: 3px solid var(--saffron); color: var(--muted); font-size: .86rem; padding-left: 9px; }
+    .inventory-list { display: grid; gap: 10px; max-height: 465px; overflow: auto; padding-right: 2px; }
+    .listing {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .listing-top { align-items: start; display: flex; justify-content: space-between; gap: 10px; }
+    .listing p { color: var(--muted); font-size: .9rem; margin-top: 6px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .tag {
+      background: rgba(47,111,79,.10);
+      border: 1px solid rgba(47,111,79,.16);
+      border-radius: 999px;
+      color: var(--leaf-2);
+      font-size: .74rem;
+      font-weight: 900;
+      padding: 5px 8px;
+    }
+    .tag.gold { background: var(--gold); border-color: #edd58c; color: #6d4d0f; }
+    .tag.blue { background: var(--blue); border-color: #ccdaf5; color: #274267; }
+    .confidence {
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 900;
+      padding: 5px 8px;
+      white-space: nowrap;
+    }
+    .confidence.high { background: var(--mint); color: var(--leaf-2); }
+    .confidence.medium { background: var(--gold); color: #6d4d0f; }
+    .confidence.low { background: var(--rose); color: #843d20; }
+    .metric-grid { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); }
+    .metric {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .metric strong { display: block; font-size: 1.25rem; }
+    .metric span { color: var(--muted); display: block; font-size: .78rem; }
+    .proactive {
+      background: #fff;
+      border: 1px dashed var(--saffron);
+      border-radius: 8px;
+      color: var(--ink);
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .iphone { min-height: 700px; max-width: 520px; }
+      .chat { min-height: 680px; }
+    }
+    @media (max-width: 640px) {
+      .shell { width: calc(100% - 24px); }
+      .topbar { align-items: start; display: grid; }
+      .metric-grid, .input-row { grid-template-columns: 1fr; }
+      .bubble { max-width: 96%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Working Prototype</p>
+        <h1>LocalPlate + Foodie Agent</h1>
+        <p class="lead">A high-fidelity prototype where Foodie, the LocalPlate buyer agent, helps users find food inside WhatsApp while the inventory agent scans neighborhood sources, labels menus, and keeps daily supply fresh.</p>
+      </div>
+      <a href="./index.html">Back to PRD</a>
+    </div>
+  </header>
+
+  <main class="shell layout">
+    <aside class="panel stack">
+      <div>
+        <p class="eyebrow">Buyer Profile</p>
+        <h2>Preference memory</h2>
+      </div>
+      <label>Name <input id="buyerName" value="Mohit" /></label>
+      <label>Neighborhood
+        <select id="neighborhood">
+          <option>Tracy</option>
+          <option>Mountain House</option>
+          <option>Lathrop</option>
+          <option>Dublin</option>
+        </select>
+      </label>
+      <label>Home address
+        <input id="address" value="Ellis Town Dr, Tracy, CA" />
+      </label>
+      <label>Radius
+        <select id="radius">
+          <option value="5">5 miles</option>
+          <option value="8" selected>8 miles</option>
+          <option value="15">15 miles</option>
+          <option value="40">40 miles for specials</option>
+        </select>
+      </label>
+      <div class="stack">
+        <label>Dietary rules</label>
+        <div class="chips" id="dietChips">
+          <button class="chip active" data-value="veg">Veg</button>
+          <button class="chip active" data-value="jain">Jain</button>
+          <button class="chip" data-value="vegan">Vegan</button>
+          <button class="chip" data-value="eggless">Eggless</button>
+          <button class="chip" data-value="nut-free">Nut-free</button>
+          <button class="chip" data-value="non-veg">Non-veg OK</button>
+        </div>
+      </div>
+      <div class="stack">
+        <label>Cuisine preferences</label>
+        <div class="chips" id="cuisineChips">
+          <button class="chip active" data-value="Gujarati">Gujarati</button>
+          <button class="chip active" data-value="South Indian">South Indian</button>
+          <button class="chip" data-value="Punjabi">Punjabi</button>
+          <button class="chip" data-value="Sweets">Sweets</button>
+          <button class="chip" data-value="Tiffin">Tiffin</button>
+        </div>
+      </div>
+      <label>Pickup target
+        <select id="pickup">
+          <option>Tonight 6-8 PM</option>
+          <option>Lunch today</option>
+          <option>Weekend</option>
+          <option>Next week catering</option>
+        </select>
+      </label>
+      <button class="button" id="saveProfile">Save profile</button>
+      <div class="panel blue stack">
+        <h3>Prototype scope</h3>
+        <p>This is a working web simulation. The real version would replace mock scans with WhatsApp Business/Twilio events, source connectors, OCR, and a persistent database.</p>
+      </div>
+    </aside>
+
+    <section class="iphone" aria-label="iPhone WhatsApp buyer concierge prototype">
+      <div class="island"></div>
+      <div class="chat">
+        <div class="chat-head">
+          <div class="agent-title"><span class="agent-avatar">F</span><div><strong>Foodie Agent</strong><div class="status" id="agentStatus">LocalPlate concierge - online</div></div></div>
+          <div class="status">WhatsApp</div>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="composer">
+          <div class="quick-row">
+            <button class="quick" data-prompt="Looking for Jain dinner tonight within 8 miles from home.">Jain dinner</button>
+            <button class="quick" data-prompt="What South Indian options are available tonight near my address?">South Indian</button>
+            <button class="quick" data-prompt="Any vegan-friendly options nearby?">Vegan-friendly</button>
+          <button class="quick" data-prompt="I need catering for 20 people next week.">Catering</button>
+          <button class="quick" data-prompt="Send me a proactive 4 PM digest.">4 PM digest</button>
+          <button class="quick" data-action="message-first">Message #1</button>
+          <button class="quick" data-action="source-proof">Source proof</button>
+        </div>
+          <div class="input-row">
+            <textarea id="prompt" placeholder="Message Foodie: Looking for veg dinner tonight from home..."></textarea>
+            <button class="button" id="send">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="stack">
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Inventory Agent</p>
+          <h2>Neighborhood scan</h2>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><strong id="sourceCount">7</strong><span>sources</span></div>
+          <div class="metric"><strong id="dropCount">9</strong><span>drops</span></div>
+          <div class="metric"><strong id="freshCount">6</strong><span>fresh today</span></div>
+        </div>
+        <button class="button secondary" id="runScan">Run mock area scan</button>
+        <div class="agent-log" id="agentLog"></div>
+      </section>
+
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Live Inventory</p>
+          <h2>Today + week</h2>
+        </div>
+        <div class="inventory-list" id="inventory"></div>
+      </section>
+
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Buyer Action</p>
+          <h2>Best match handoff</h2>
+        </div>
+        <div class="action-card" id="bestMatch">
+          <p>Ask Foodie for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>
+        </div>
+      </section>
+
+      <section class="panel soft stack">
+        <h2>Proactive WhatsApp digest</h2>
+        <div class="proactive" id="digest">Tap "4 PM digest" or "Run mock area scan" to generate a profile-aware message.</div>
+      </section>
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Website Surface</p>
+          <h2>Production onboarding mock</h2>
+        </div>
+        <div class="surface-preview">
+          <div class="site-preview">
+            <div class="site-bar"><span>LocalPlate</span><span>Connect WhatsApp</span></div>
+            <div class="site-body">
+              <div class="mini-field">Name: Mohit</div>
+              <div class="mini-field">Phone / WhatsApp: +1 *** *** 1282</div>
+              <div class="mini-field">Home: Ellis Town Dr, Tracy</div>
+              <div class="mini-field">Diet: Veg, Jain, no onion/garlic</div>
+              <div class="mini-field">CTA: Continue in WhatsApp with Foodie</div>
+            </div>
+          </div>
+          <p>Production split: website captures durable profile and address; WhatsApp handles daily intent, alerts, and seller actions.</p>
+        </div>
+      </section>
+      <section class="panel blue stack">
+        <div>
+          <p class="eyebrow">Foodie Personality</p>
+          <h2>Agent behavior</h2>
+        </div>
+        <p><strong>Tone:</strong> warm, practical, food-aware, never robotic.</p>
+        <p><strong>Promise:</strong> "I will find what fits your diet, distance, and pickup window."</p>
+        <p><strong>Guardrail:</strong> strict diets only show verified or clearly labeled confidence.</p>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    const inventory = [
+      {
+        seller: "Asha's Gujarati Kitchen",
+        area: "Tracy",
+        distance: 2.4,
+        menu: "Gujarati thali: rotli, dal, rice, aloo shaak, kachumber",
+        pickupAddress: "Corral Hollow Rd & Grant Line Rd, Tracy, CA",
+        price: 14,
+        pickup: "Tonight 6-7:30 PM",
+        availability: "12 plates",
+        labels: ["veg", "jain", "Gujarati", "Tiffin"],
+        confidence: "high",
+        source: "connected WhatsApp source",
+        cadence: "daily"
+      },
+      {
+        seller: "Sri Dosa Home Foods",
+        area: "Mountain House",
+        distance: 7.1,
+        menu: "Idli, dosa batter, sambar, coconut chutney",
+        pickupAddress: "Central Pkwy & Main St, Mountain House, CA",
+        price: 11,
+        pickup: "Tonight 5:30-8 PM",
+        availability: "few left",
+        labels: ["veg", "vegan-friendly", "South Indian"],
+        confidence: "medium",
+        source: "image flyer OCR",
+        cadence: "same-day"
+      },
+      {
+        seller: "Patel Tiffins",
+        area: "Lathrop",
+        distance: 11.8,
+        menu: "Weekly tiffin plan: 5 dinners, rotating Gujarati/Punjabi menu",
+        pickupAddress: "River Islands Pkwy, Lathrop, CA",
+        price: 65,
+        pickup: "Starts Monday",
+        availability: "accepting weekly orders",
+        labels: ["veg", "Gujarati", "Punjabi", "Tiffin"],
+        confidence: "high",
+        source: "public listing",
+        cadence: "weekly"
+      },
+      {
+        seller: "Meera's Eggless Bakes",
+        area: "Tracy",
+        distance: 3.6,
+        menu: "Eggless rasmalai cake, gulab jamun cups, custom party desserts",
+        pickupAddress: "Schulte Rd & Tracy Blvd, Tracy, CA",
+        price: 28,
+        pickup: "Weekend preorder",
+        availability: "preorder",
+        labels: ["veg", "eggless", "Sweets", "Catering"],
+        confidence: "high",
+        source: "seller form",
+        cadence: "advance"
+      },
+      {
+        seller: "Annapurna Meals",
+        area: "Dublin",
+        distance: 38,
+        menu: "Festival farsan boxes and Diwali sweets",
+        pickupAddress: "Dougherty Rd, Dublin, CA",
+        price: 34,
+        pickup: "Weekend",
+        availability: "preorder",
+        labels: ["veg", "Sweets", "Gujarati", "Festival special"],
+        confidence: "medium",
+        source: "public Facebook post",
+        cadence: "advance"
+      },
+      {
+        seller: "Punjab Rasoi",
+        area: "Tracy",
+        distance: 5.8,
+        menu: "Paneer tikka masala, dal makhani, jeera rice, naan",
+        pickupAddress: "MacArthur Dr & Lowell Ave, Tracy, CA",
+        price: 16,
+        pickup: "Tonight 6-8 PM",
+        availability: "18 plates",
+        labels: ["veg", "Punjabi"],
+        confidence: "high",
+        source: "admin-only menu group",
+        cadence: "same-day"
+      },
+      {
+        seller: "Green Bowl Tiffin",
+        area: "Mountain House",
+        distance: 8.4,
+        menu: "Vegan khichdi bowl, roasted vegetables, cilantro chutney",
+        pickupAddress: "Mountain House Pkwy, Mountain House, CA",
+        price: 13,
+        pickup: "Tonight 6:30-7:30 PM",
+        availability: "7 bowls",
+        labels: ["vegan", "veg", "nut-free", "Tiffin"],
+        confidence: "high",
+        source: "seller-owned WhatsApp group",
+        cadence: "daily"
+      },
+      {
+        seller: "Biryani Uncle",
+        area: "Lathrop",
+        distance: 12.3,
+        menu: "Chicken dum biryani family tray",
+        pickupAddress: "Louise Ave, Lathrop, CA",
+        price: 38,
+        pickup: "Friday preorder",
+        availability: "preorder",
+        labels: ["non-veg", "Catering"],
+        confidence: "high",
+        source: "Sulekha-style listing",
+        cadence: "advance"
+      },
+      {
+        seller: "Jain Snacks by Ritu",
+        area: "Tracy",
+        distance: 4.2,
+        menu: "Jain dhokla, khandvi, thepla packs",
+        pickupAddress: "Eleventh St & Bessie Ave, Tracy, CA",
+        price: 12,
+        pickup: "Today 4-6 PM",
+        availability: "9 packs",
+        labels: ["veg", "jain", "Gujarati", "Sweets"],
+        confidence: "high",
+        source: "forwarded flyer",
+        cadence: "same-day"
+      }
+    ];
+
+    const state = {
+      diets: ["veg", "jain"],
+      cuisines: ["Gujarati", "South Indian"],
+      logs: [],
+      lastResults: []
+    };
+
+    const messages = document.getElementById("messages");
+    const inventoryEl = document.getElementById("inventory");
+    const agentLog = document.getElementById("agentLog");
+    const digestEl = document.getElementById("digest");
+
+    function addMessage(type, text) {
+      const el = document.createElement("div");
+      el.className = "bubble " + type;
+      el.textContent = text;
+      messages.appendChild(el);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addLog(text) {
+      state.logs.unshift(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + " - " + text);
+      renderLogs();
+    }
+
+    function renderLogs() {
+      agentLog.innerHTML = state.logs.slice(0, 9).map(line => '<div class="log-line">' + line + '</div>').join("");
+    }
+
+    function confidenceClass(confidence) {
+      if (confidence === "high") return "high";
+      if (confidence === "medium") return "medium";
+      return "low";
+    }
+
+    function renderInventory(list = inventory) {
+      inventoryEl.innerHTML = list.map(item => {
+        const tags = item.labels.map(label => '<span class="tag ' + (label.includes("Jain") || label === "jain" ? "gold" : "") + '">' + label + '</span>').join("");
+        return '<article class="listing">' +
+          '<div class="listing-top"><h3>' + item.seller + '</h3><span class="confidence ' + confidenceClass(item.confidence) + '">' + item.confidence + '</span></div>' +
+          '<p><strong>' + item.menu + '</strong></p>' +
+          '<p>' + item.area + ' - ' + item.distance + ' mi from home - $' + item.price + ' - ' + item.pickup + ' - ' + item.availability + '</p>' +
+          '<p>Pickup: ' + item.pickupAddress + '</p>' +
+          '<p>Source: ' + item.source + ' - cadence: ' + item.cadence + '</p>' +
+          '<div class="tag-row">' + tags + '</div>' +
+          '</article>';
+      }).join("");
+      document.getElementById("dropCount").textContent = list.length;
+      document.getElementById("freshCount").textContent = list.filter(item => item.pickup.includes("Tonight") || item.pickup.includes("Today")).length;
+    }
+
+    function renderBestMatch(item) {
+      const box = document.getElementById("bestMatch");
+      if (!item) {
+        box.innerHTML = "<p>Ask Foodie for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>";
+        return;
+      }
+      const profile = getProfile();
+      const draft = "Hi " + item.seller + ", I found your menu on LocalPlate. Do you have " + item.menu.split(":")[0] + " available for pickup? I need 2-4 servings. Pickup around " + item.pickup + ".";
+      box.innerHTML =
+        '<h3>' + item.seller + '</h3>' +
+        '<p><strong>' + item.menu + '</strong></p>' +
+        '<div class="map-strip">' +
+          '<div class="route"><span class="pin">H</span><span class="route-line"></span><span class="pin orange">P</span></div>' +
+          '<p><strong>' + item.distance + ' mi from home</strong></p>' +
+          '<p>Home: ' + profile.address + '</p>' +
+          '<p>Pickup: ' + item.pickupAddress + '</p>' +
+        '</div>' +
+        '<div class="draft">' + draft + '</div>' +
+        '<div class="tag-row">' +
+          '<span class="tag">source: ' + item.source + '</span>' +
+          '<span class="tag gold">confidence: ' + item.confidence + '</span>' +
+          '<span class="tag blue">cadence: ' + item.cadence + '</span>' +
+        '</div>';
+    }
+
+    function getProfile() {
+      return {
+        name: document.getElementById("buyerName").value || "Buyer",
+        address: document.getElementById("address").value || "home",
+        neighborhood: document.getElementById("neighborhood").value,
+        radius: Number(document.getElementById("radius").value),
+        pickup: document.getElementById("pickup").value,
+        diets: state.diets,
+        cuisines: state.cuisines
+      };
+    }
+
+    function parseIntent(prompt) {
+      const q = prompt.toLowerCase();
+      const requested = [];
+      ["jain", "vegan", "veg", "eggless", "nut-free", "non-veg"].forEach(label => {
+        if (q.includes(label)) requested.push(label);
+      });
+      const cuisineHints = [];
+      ["Gujarati", "South Indian", "Punjabi", "Sweets", "Tiffin", "Catering"].forEach(label => {
+        if (q.includes(label.toLowerCase())) cuisineHints.push(label);
+      });
+      return {
+        diets: requested.length ? requested : state.diets,
+        cuisines: cuisineHints.length ? cuisineHints : state.cuisines,
+        catering: q.includes("catering") || q.includes("20 people") || q.includes("party"),
+        weekend: q.includes("weekend") || q.includes("sweets"),
+        strict: q.includes("jain") || q.includes("vegan") || q.includes("allergy") || q.includes("nut")
+      };
+    }
+
+    function matchInventory(prompt) {
+      const profile = getProfile();
+      const intent = parseIntent(prompt);
+      addLog("Foodie received: " + prompt);
+      addLog("Foodie asks Inventory Agent for " + intent.diets.join("/") + " within " + profile.radius + " miles of " + profile.address + ".");
+      let results = inventory.filter(item => item.distance <= profile.radius || intent.weekend || intent.catering);
+      if (intent.catering) {
+        results = results.filter(item => item.labels.includes("Catering") || item.cadence === "advance");
+      } else {
+        results = results.filter(item => intent.diets.some(label => item.labels.includes(label) || item.labels.includes(label + "-friendly")));
+      }
+      results = results.map(item => {
+        const dietScore = intent.diets.filter(label => item.labels.includes(label)).length * 4;
+        const cuisineScore = intent.cuisines.filter(label => item.labels.includes(label)).length * 2;
+        const confidenceScore = item.confidence === "high" ? 3 : item.confidence === "medium" ? 1 : 0;
+        const distanceScore = Math.max(0, 5 - item.distance / 3);
+        return { item, score: dietScore + cuisineScore + confidenceScore + distanceScore };
+      }).sort((a, b) => b.score - a.score).map(row => row.item);
+      if (intent.strict) {
+        results = results.sort((a, b) => (b.confidence === "high") - (a.confidence === "high"));
+      }
+      addLog("Inventory Agent returned " + results.length + " ranked matches with labels and confidence.");
+      state.lastResults = results;
+      renderBestMatch(results[0]);
+      renderInventory(results.length ? results : inventory);
+      return results;
+    }
+
+    function formatResults(results, prompt) {
+      if (!results.length) {
+        return "I could not find a strong match in the current inventory. I can widen the radius, include likely matches, or watch for new drops and notify you.";
+      }
+      const top = results.slice(0, 4).map((item, index) => {
+        const labels = item.labels.slice(0, 4).join(", ");
+        return (index + 1) + ". " + item.seller + " - " + item.menu + "\n" +
+          "   " + item.distance + " mi from home - $" + item.price + " - " + item.pickup + "\n" +
+          "   Pickup: " + item.pickupAddress + "\n" +
+          "   " + item.availability + " - " + labels + " - " + item.confidence + " confidence";
+      }).join("\n\n");
+      return "I found these for you. I prioritized strict diet match, distance from your home, pickup timing, and freshness.\n\n" + top + "\n\nReply with a number and I can draft the seller message, reserve, or show backups.";
+    }
+
+    function generateDigest() {
+      const profile = getProfile();
+      const results = matchInventory("proactive digest for " + profile.diets.join(" ") + " near " + profile.neighborhood);
+      const lines = results.slice(0, 3).map(item => "- " + item.seller + ": " + item.menu + " (" + item.pickup + ", " + item.distance + " mi)");
+      const digest = "4 PM LocalPlate digest for " + profile.name + "\n" +
+        "Fresh matches from " + profile.address + ":\n" + lines.join("\n") +
+        "\n\nReply 1, 2, or 3 to message a seller. Reply 'more' to widen radius.";
+      digestEl.textContent = digest;
+      addMessage("agent", digest);
+    }
+
+    function sendPrompt(prompt) {
+      const clean = prompt.trim();
+      if (!clean) return;
+      addMessage("user", clean);
+      document.getElementById("prompt").value = "";
+      document.getElementById("agentStatus").textContent = "querying inventory agent...";
+      window.setTimeout(() => {
+        if (clean.toLowerCase().includes("digest")) {
+          generateDigest();
+        } else {
+          const results = matchInventory(clean);
+          addMessage("agent", formatResults(results, clean));
+        }
+        document.getElementById("agentStatus").textContent = "online - profile-aware";
+      }, 300);
+    }
+
+    function messageFirst() {
+      const item = state.lastResults[0];
+      if (!item) {
+        addMessage("agent", "Ask me for food first, then I can draft a seller message for the top match.");
+        return;
+      }
+      const profile = getProfile();
+      addMessage("user", "Message #1");
+      addMessage("agent", "Here is the draft I would send on WhatsApp:\n\nHi " + item.seller + ", I am interested in your " + item.menu.split(":")[0] + ". Is it still available for pickup from " + item.pickupAddress + "? I am coming from " + profile.address + " and need 2-4 servings.\n\nWant me to send, edit, or ask for pickup instructions?");
+      addLog("Foodie prepared seller handoff draft for " + item.seller + ".");
+    }
+
+    function showSourceProof() {
+      const item = state.lastResults[0];
+      if (!item) {
+        addMessage("agent", "Ask me for food first and I will show source proof for the top result.");
+        return;
+      }
+      addMessage("user", "Show source proof for #1");
+      addMessage("agent", "Source proof for " + item.seller + ":\n- Source type: " + item.source + "\n- Scan cadence: " + item.cadence + "\n- Extracted labels: " + item.labels.join(", ") + "\n- Confidence: " + item.confidence + "\n- Last seen: during latest area scan\n\nI would show the original menu snippet/image in production before strict diet matching.");
+      addLog("Foodie exposed source proof and label confidence for " + item.seller + ".");
+    }
+
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        chip.classList.toggle("active");
+        const container = chip.parentElement.id === "dietChips" ? "diets" : "cuisines";
+        state[container] = Array.from(chip.parentElement.querySelectorAll(".chip.active")).map(el => el.dataset.value);
+      });
+    });
+
+    document.querySelectorAll(".quick").forEach(button => {
+      button.addEventListener("click", () => {
+        if (button.dataset.action === "message-first") return messageFirst();
+        if (button.dataset.action === "source-proof") return showSourceProof();
+        sendPrompt(button.dataset.prompt);
+      });
+    });
+
+    document.getElementById("send").addEventListener("click", () => sendPrompt(document.getElementById("prompt").value));
+    document.getElementById("prompt").addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendPrompt(document.getElementById("prompt").value);
+      }
+    });
+
+    document.getElementById("saveProfile").addEventListener("click", () => {
+      const profile = getProfile();
+      addMessage("system", "Profile saved: " + profile.address + ", " + profile.radius + " miles, diet: " + profile.diets.join(", ") + ", cuisine: " + profile.cuisines.join(", "));
+      addLog("Buyer profile updated with exact address and available to Foodie ranking.");
+    });
+
+    document.getElementById("runScan").addEventListener("click", () => {
+      addLog("Inventory Agent scanned Tracy, Mountain House, Lathrop, Dublin.");
+      addLog("Classified 38 posts: 9 menu drops, 4 sold-out updates, 21 chatter posts, 4 unrelated.");
+      addLog("Applied labels: veg, vegan-friendly, Jain, eggless, South Indian, Gujarati, catering.");
+      renderInventory(inventory);
+      generateDigest();
+    });
+
+    renderInventory();
+    renderBestMatch(null);
+    addLog("Initial mock inventory loaded from 7 configured sources.");
+    addMessage("agent", "Hi " + getProfile().name + ", I am Foodie from LocalPlate. Tell me what you want to eat and I will check today's neighborhood inventory from your home address. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
+  </script>
+</body>
+</html>

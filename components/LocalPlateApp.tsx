@@ -181,7 +181,7 @@ export function LocalPlateApp() {
         </div>
         <div className="heroActions">
           <a href="/prototype.html">Static prototype</a>
-          <a href="/index.html">PRD</a>
+          <a href="/prd.html">PRD</a>
         </div>
       </header>
 
