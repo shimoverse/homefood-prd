@@ -198,6 +198,69 @@
       gap: 12px;
       padding: 14px;
     }
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+    .map-strip {
+      background:
+        linear-gradient(90deg, rgba(47,111,79,.12) 0 48%, rgba(217,133,42,.12) 48% 100%),
+        #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+    }
+    .route {
+      align-items: center;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 32px 1fr 32px;
+    }
+    .pin {
+      align-items: center;
+      background: var(--leaf);
+      border-radius: 999px;
+      color: #fff;
+      display: inline-flex;
+      font-size: .78rem;
+      font-weight: 1000;
+      height: 32px;
+      justify-content: center;
+      width: 32px;
+    }
+    .pin.orange { background: var(--saffron); }
+    .route-line {
+      border-top: 3px dashed rgba(23,33,28,.28);
+      height: 1px;
+    }
+    .draft {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: .9rem;
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+    .source-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .source-row {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 4px;
+      padding: 10px;
+    }
+    .source-row span { color: var(--muted); font-size: .82rem; }
     .site-preview {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -381,9 +444,11 @@
             <button class="quick" data-prompt="Looking for Jain dinner tonight within 8 miles from home.">Jain dinner</button>
             <button class="quick" data-prompt="What South Indian options are available tonight near my address?">South Indian</button>
             <button class="quick" data-prompt="Any vegan-friendly options nearby?">Vegan-friendly</button>
-            <button class="quick" data-prompt="I need catering for 20 people next week.">Catering</button>
-            <button class="quick" data-prompt="Send me a proactive 4 PM digest.">4 PM digest</button>
-          </div>
+          <button class="quick" data-prompt="I need catering for 20 people next week.">Catering</button>
+          <button class="quick" data-prompt="Send me a proactive 4 PM digest.">4 PM digest</button>
+          <button class="quick" data-action="message-first">Message #1</button>
+          <button class="quick" data-action="source-proof">Source proof</button>
+        </div>
           <div class="input-row">
             <textarea id="prompt" placeholder="Message Fulli: Looking for veg dinner tonight from home..."></textarea>
             <button class="button" id="send">Send</button>
@@ -415,6 +480,16 @@
         <div class="inventory-list" id="inventory"></div>
       </section>
 
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Buyer Action</p>
+          <h2>Best match handoff</h2>
+        </div>
+        <div class="action-card" id="bestMatch">
+          <p>Ask Fulli for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>
+        </div>
+      </section>
+
       <section class="panel soft stack">
         <h2>Proactive WhatsApp digest</h2>
         <div class="proactive" id="digest">Tap "4 PM digest" or "Run mock area scan" to generate a profile-aware message.</div>
@@ -437,6 +512,15 @@
           </div>
           <p>Production split: website captures durable profile and address; WhatsApp handles daily intent, alerts, and seller actions.</p>
         </div>
+      </section>
+      <section class="panel blue stack">
+        <div>
+          <p class="eyebrow">Fulli Personality</p>
+          <h2>Agent behavior</h2>
+        </div>
+        <p><strong>Tone:</strong> warm, practical, food-aware, never robotic.</p>
+        <p><strong>Promise:</strong> "I will find what fits your diet, distance, and pickup window."</p>
+        <p><strong>Guardrail:</strong> strict diets only show verified or clearly labeled confidence.</p>
       </section>
     </aside>
   </main>
@@ -574,7 +658,8 @@
     const state = {
       diets: ["veg", "jain"],
       cuisines: ["Gujarati", "South Indian"],
-      logs: []
+      logs: [],
+      lastResults: []
     };
 
     const messages = document.getElementById("messages");
@@ -619,6 +704,31 @@
       }).join("");
       document.getElementById("dropCount").textContent = list.length;
       document.getElementById("freshCount").textContent = list.filter(item => item.pickup.includes("Tonight") || item.pickup.includes("Today")).length;
+    }
+
+    function renderBestMatch(item) {
+      const box = document.getElementById("bestMatch");
+      if (!item) {
+        box.innerHTML = "<p>Ask Fulli for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>";
+        return;
+      }
+      const profile = getProfile();
+      const draft = "Hi " + item.seller + ", I found your menu on LocalPlate. Do you have " + item.menu.split(":")[0] + " available for pickup? I need 2-4 servings. Pickup around " + item.pickup + ".";
+      box.innerHTML =
+        '<h3>' + item.seller + '</h3>' +
+        '<p><strong>' + item.menu + '</strong></p>' +
+        '<div class="map-strip">' +
+          '<div class="route"><span class="pin">H</span><span class="route-line"></span><span class="pin orange">P</span></div>' +
+          '<p><strong>' + item.distance + ' mi from home</strong></p>' +
+          '<p>Home: ' + profile.address + '</p>' +
+          '<p>Pickup: ' + item.pickupAddress + '</p>' +
+        '</div>' +
+        '<div class="draft">' + draft + '</div>' +
+        '<div class="tag-row">' +
+          '<span class="tag">source: ' + item.source + '</span>' +
+          '<span class="tag gold">confidence: ' + item.confidence + '</span>' +
+          '<span class="tag blue">cadence: ' + item.cadence + '</span>' +
+        '</div>';
     }
 
     function getProfile() {
@@ -674,6 +784,8 @@
         results = results.sort((a, b) => (b.confidence === "high") - (a.confidence === "high"));
       }
       addLog("Inventory Agent returned " + results.length + " ranked matches with labels and confidence.");
+      state.lastResults = results;
+      renderBestMatch(results[0]);
       renderInventory(results.length ? results : inventory);
       return results;
     }
@@ -720,6 +832,29 @@
       }, 300);
     }
 
+    function messageFirst() {
+      const item = state.lastResults[0];
+      if (!item) {
+        addMessage("agent", "Ask me for food first, then I can draft a seller message for the top match.");
+        return;
+      }
+      const profile = getProfile();
+      addMessage("user", "Message #1");
+      addMessage("agent", "Here is the draft I would send on WhatsApp:\n\nHi " + item.seller + ", I am interested in your " + item.menu.split(":")[0] + ". Is it still available for pickup from " + item.pickupAddress + "? I am coming from " + profile.address + " and need 2-4 servings.\n\nWant me to send, edit, or ask for pickup instructions?");
+      addLog("Fulli prepared seller handoff draft for " + item.seller + ".");
+    }
+
+    function showSourceProof() {
+      const item = state.lastResults[0];
+      if (!item) {
+        addMessage("agent", "Ask me for food first and I will show source proof for the top result.");
+        return;
+      }
+      addMessage("user", "Show source proof for #1");
+      addMessage("agent", "Source proof for " + item.seller + ":\n- Source type: " + item.source + "\n- Scan cadence: " + item.cadence + "\n- Extracted labels: " + item.labels.join(", ") + "\n- Confidence: " + item.confidence + "\n- Last seen: during latest area scan\n\nI would show the original menu snippet/image in production before strict diet matching.");
+      addLog("Fulli exposed source proof and label confidence for " + item.seller + ".");
+    }
+
     document.querySelectorAll(".chip").forEach(chip => {
       chip.addEventListener("click", () => {
         chip.classList.toggle("active");
@@ -729,7 +864,11 @@
     });
 
     document.querySelectorAll(".quick").forEach(button => {
-      button.addEventListener("click", () => sendPrompt(button.dataset.prompt));
+      button.addEventListener("click", () => {
+        if (button.dataset.action === "message-first") return messageFirst();
+        if (button.dataset.action === "source-proof") return showSourceProof();
+        sendPrompt(button.dataset.prompt);
+      });
     });
 
     document.getElementById("send").addEventListener("click", () => sendPrompt(document.getElementById("prompt").value));
@@ -755,6 +894,7 @@
     });
 
     renderInventory();
+    renderBestMatch(null);
     addLog("Initial mock inventory loaded from 7 configured sources.");
     addMessage("agent", "Hi " + getProfile().name + ", I am Fulli from LocalPlate. Tell me what you want to eat and I will check today's neighborhood inventory from your home address. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
   </script>
