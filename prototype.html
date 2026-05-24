@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LocalPlate Radar Prototype</title>
+  <title>LocalPlate + Fulli Agent Prototype</title>
   <style>
     :root {
       --ink: #17211c;
@@ -13,6 +13,8 @@
       --card: #ffffff;
       --leaf: #2f6f4f;
       --leaf-2: #164734;
+      --wa: #075e54;
+      --wa-2: #128c7e;
       --saffron: #d9852a;
       --mint: #e8f3eb;
       --rose: #fff1ea;
@@ -52,7 +54,7 @@
     .layout {
       display: grid;
       gap: 16px;
-      grid-template-columns: 310px minmax(360px, 1fr) 360px;
+      grid-template-columns: 320px minmax(390px, 1fr) 380px;
       padding: 16px 0 34px;
     }
     .panel {
@@ -106,24 +108,58 @@
     }
     .button.secondary { background: #fff; border: 1px solid var(--line); color: var(--leaf-2); }
     .button.warn { background: var(--saffron); }
+    .iphone {
+      background: #0b0f0d;
+      border: 10px solid #0b0f0d;
+      border-radius: 42px;
+      box-shadow: 0 28px 80px rgba(23, 33, 28, .32);
+      margin: 0 auto;
+      max-width: 480px;
+      min-height: 780px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+    .island {
+      background: #000;
+      border-radius: 999px;
+      height: 26px;
+      left: 50%;
+      position: absolute;
+      top: 8px;
+      transform: translateX(-50%);
+      width: 112px;
+      z-index: 3;
+    }
     .chat {
-      background: #16231d;
-      border-radius: 24px;
-      box-shadow: 0 22px 60px rgba(23, 33, 28, .25);
-      color: #fff;
+      background: #efe7dc;
+      color: var(--ink);
       display: grid;
       grid-template-rows: auto 1fr auto;
-      min-height: 720px;
+      min-height: 760px;
       overflow: hidden;
     }
     .chat-head {
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,.12);
+      background: var(--wa);
+      color: #fff;
       display: flex;
       justify-content: space-between;
-      padding: 16px 18px;
+      padding: 42px 16px 12px;
     }
-    .status { color: #b8c8bf; font-size: .86rem; }
+    .agent-title { align-items: center; display: flex; gap: 10px; }
+    .agent-avatar {
+      align-items: center;
+      background: #fff;
+      border-radius: 999px;
+      color: var(--wa);
+      display: inline-flex;
+      font-weight: 1000;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+    .status { color: rgba(255,255,255,.76); font-size: .82rem; }
     .messages {
       align-content: start;
       display: grid;
@@ -139,21 +175,53 @@
     }
     .bubble.user { background: #dcf8c6; color: var(--ink); justify-self: end; }
     .bubble.agent { background: #fff; color: var(--ink); justify-self: start; }
-    .bubble.system { background: rgba(255,255,255,.12); color: #dbe6df; justify-self: center; max-width: 96%; }
+    .bubble.system { background: rgba(7,94,84,.10); color: var(--leaf-2); justify-self: center; max-width: 96%; }
     .bubble small { color: var(--muted); display: block; margin-top: 8px; }
-    .composer { border-top: 1px solid rgba(255,255,255,.12); display: grid; gap: 10px; padding: 14px; }
+    .composer { background: #f7f3ee; border-top: 1px solid rgba(23,33,28,.10); display: grid; gap: 10px; padding: 12px; }
     .quick-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .quick {
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
+      background: #fff;
+      border: 1px solid var(--line);
       border-radius: 999px;
-      color: #fff;
+      color: var(--wa);
       cursor: pointer;
       font-size: .82rem;
       font-weight: 800;
       padding: 7px 10px;
     }
     .input-row { display: grid; gap: 8px; grid-template-columns: 1fr 92px; }
+    .surface-preview {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+    }
+    .site-preview {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .site-bar {
+      align-items: center;
+      background: var(--leaf-2);
+      color: #fff;
+      display: flex;
+      font-size: .82rem;
+      font-weight: 900;
+      justify-content: space-between;
+      padding: 10px 12px;
+    }
+    .site-body { display: grid; gap: 10px; padding: 12px; }
+    .mini-field {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: .82rem;
+      padding: 9px;
+    }
     .agent-log {
       background: #fff;
       border: 1px solid var(--line);
@@ -215,6 +283,7 @@
     }
     @media (max-width: 1080px) {
       .layout { grid-template-columns: 1fr; }
+      .iphone { min-height: 700px; max-width: 520px; }
       .chat { min-height: 680px; }
     }
     @media (max-width: 640px) {
@@ -230,8 +299,8 @@
     <div class="topbar">
       <div>
         <p class="eyebrow">Working Prototype</p>
-        <h1>Buyer Agent + Inventory Agent</h1>
-        <p class="lead">A WhatsApp-style prototype where a buyer asks for food, the buyer agent queries a fresh neighborhood inventory, and the inventory agent explains how it scanned sources, labeled menus, and ranked options.</p>
+        <h1>LocalPlate + Fulli Agent</h1>
+        <p class="lead">A high-fidelity prototype where Fulli, the LocalPlate buyer agent, helps users find food inside WhatsApp while the inventory agent scans neighborhood sources, labels menus, and keeps daily supply fresh.</p>
       </div>
       <a href="./index.html">Back to PRD</a>
     </div>
@@ -251,6 +320,9 @@
           <option>Lathrop</option>
           <option>Dublin</option>
         </select>
+      </label>
+      <label>Home address
+        <input id="address" value="Ellis Town Dr, Tracy, CA" />
       </label>
       <label>Radius
         <select id="radius">
@@ -296,23 +368,26 @@
       </div>
     </aside>
 
-    <section class="chat" aria-label="WhatsApp buyer concierge prototype">
-      <div class="chat-head">
-        <div><strong>LocalPlate Buyer Agent</strong><div class="status" id="agentStatus">online - profile-aware</div></div>
-        <div class="status">WhatsApp-style</div>
-      </div>
-      <div class="messages" id="messages"></div>
-      <div class="composer">
-        <div class="quick-row">
-          <button class="quick" data-prompt="Looking for Jain dinner tonight within 8 miles.">Jain dinner</button>
-          <button class="quick" data-prompt="What South Indian options are available tonight?">South Indian</button>
-          <button class="quick" data-prompt="Any vegan-friendly options nearby?">Vegan-friendly</button>
-          <button class="quick" data-prompt="I need catering for 20 people next week.">Catering</button>
-          <button class="quick" data-prompt="Send me a proactive 4 PM digest.">4 PM digest</button>
+    <section class="iphone" aria-label="iPhone WhatsApp buyer concierge prototype">
+      <div class="island"></div>
+      <div class="chat">
+        <div class="chat-head">
+          <div class="agent-title"><span class="agent-avatar">F</span><div><strong>Fulli Agent</strong><div class="status" id="agentStatus">LocalPlate concierge - online</div></div></div>
+          <div class="status">WhatsApp</div>
         </div>
-        <div class="input-row">
-          <textarea id="prompt" placeholder="Ask like WhatsApp: Looking for veg dinner tonight near Tracy..."></textarea>
-          <button class="button" id="send">Send</button>
+        <div class="messages" id="messages"></div>
+        <div class="composer">
+          <div class="quick-row">
+            <button class="quick" data-prompt="Looking for Jain dinner tonight within 8 miles from home.">Jain dinner</button>
+            <button class="quick" data-prompt="What South Indian options are available tonight near my address?">South Indian</button>
+            <button class="quick" data-prompt="Any vegan-friendly options nearby?">Vegan-friendly</button>
+            <button class="quick" data-prompt="I need catering for 20 people next week.">Catering</button>
+            <button class="quick" data-prompt="Send me a proactive 4 PM digest.">4 PM digest</button>
+          </div>
+          <div class="input-row">
+            <textarea id="prompt" placeholder="Message Fulli: Looking for veg dinner tonight from home..."></textarea>
+            <button class="button" id="send">Send</button>
+          </div>
         </div>
       </div>
     </section>
@@ -344,6 +419,25 @@
         <h2>Proactive WhatsApp digest</h2>
         <div class="proactive" id="digest">Tap "4 PM digest" or "Run mock area scan" to generate a profile-aware message.</div>
       </section>
+      <section class="panel stack">
+        <div>
+          <p class="eyebrow">Website Surface</p>
+          <h2>Production onboarding mock</h2>
+        </div>
+        <div class="surface-preview">
+          <div class="site-preview">
+            <div class="site-bar"><span>LocalPlate</span><span>Connect WhatsApp</span></div>
+            <div class="site-body">
+              <div class="mini-field">Name: Mohit</div>
+              <div class="mini-field">Phone / WhatsApp: +1 *** *** 1282</div>
+              <div class="mini-field">Home: Ellis Town Dr, Tracy</div>
+              <div class="mini-field">Diet: Veg, Jain, no onion/garlic</div>
+              <div class="mini-field">CTA: Continue in WhatsApp with Fulli</div>
+            </div>
+          </div>
+          <p>Production split: website captures durable profile and address; WhatsApp handles daily intent, alerts, and seller actions.</p>
+        </div>
+      </section>
     </aside>
   </main>
 
@@ -354,6 +448,7 @@
         area: "Tracy",
         distance: 2.4,
         menu: "Gujarati thali: rotli, dal, rice, aloo shaak, kachumber",
+        pickupAddress: "Corral Hollow Rd & Grant Line Rd, Tracy, CA",
         price: 14,
         pickup: "Tonight 6-7:30 PM",
         availability: "12 plates",
@@ -367,6 +462,7 @@
         area: "Mountain House",
         distance: 7.1,
         menu: "Idli, dosa batter, sambar, coconut chutney",
+        pickupAddress: "Central Pkwy & Main St, Mountain House, CA",
         price: 11,
         pickup: "Tonight 5:30-8 PM",
         availability: "few left",
@@ -380,6 +476,7 @@
         area: "Lathrop",
         distance: 11.8,
         menu: "Weekly tiffin plan: 5 dinners, rotating Gujarati/Punjabi menu",
+        pickupAddress: "River Islands Pkwy, Lathrop, CA",
         price: 65,
         pickup: "Starts Monday",
         availability: "accepting weekly orders",
@@ -393,6 +490,7 @@
         area: "Tracy",
         distance: 3.6,
         menu: "Eggless rasmalai cake, gulab jamun cups, custom party desserts",
+        pickupAddress: "Schulte Rd & Tracy Blvd, Tracy, CA",
         price: 28,
         pickup: "Weekend preorder",
         availability: "preorder",
@@ -406,6 +504,7 @@
         area: "Dublin",
         distance: 38,
         menu: "Festival farsan boxes and Diwali sweets",
+        pickupAddress: "Dougherty Rd, Dublin, CA",
         price: 34,
         pickup: "Weekend",
         availability: "preorder",
@@ -419,6 +518,7 @@
         area: "Tracy",
         distance: 5.8,
         menu: "Paneer tikka masala, dal makhani, jeera rice, naan",
+        pickupAddress: "MacArthur Dr & Lowell Ave, Tracy, CA",
         price: 16,
         pickup: "Tonight 6-8 PM",
         availability: "18 plates",
@@ -432,6 +532,7 @@
         area: "Mountain House",
         distance: 8.4,
         menu: "Vegan khichdi bowl, roasted vegetables, cilantro chutney",
+        pickupAddress: "Mountain House Pkwy, Mountain House, CA",
         price: 13,
         pickup: "Tonight 6:30-7:30 PM",
         availability: "7 bowls",
@@ -445,6 +546,7 @@
         area: "Lathrop",
         distance: 12.3,
         menu: "Chicken dum biryani family tray",
+        pickupAddress: "Louise Ave, Lathrop, CA",
         price: 38,
         pickup: "Friday preorder",
         availability: "preorder",
@@ -458,6 +560,7 @@
         area: "Tracy",
         distance: 4.2,
         menu: "Jain dhokla, khandvi, thepla packs",
+        pickupAddress: "Eleventh St & Bessie Ave, Tracy, CA",
         price: 12,
         pickup: "Today 4-6 PM",
         availability: "9 packs",
@@ -508,7 +611,8 @@
         return '<article class="listing">' +
           '<div class="listing-top"><h3>' + item.seller + '</h3><span class="confidence ' + confidenceClass(item.confidence) + '">' + item.confidence + '</span></div>' +
           '<p><strong>' + item.menu + '</strong></p>' +
-          '<p>' + item.area + ' - ' + item.distance + ' mi - $' + item.price + ' - ' + item.pickup + ' - ' + item.availability + '</p>' +
+          '<p>' + item.area + ' - ' + item.distance + ' mi from home - $' + item.price + ' - ' + item.pickup + ' - ' + item.availability + '</p>' +
+          '<p>Pickup: ' + item.pickupAddress + '</p>' +
           '<p>Source: ' + item.source + ' - cadence: ' + item.cadence + '</p>' +
           '<div class="tag-row">' + tags + '</div>' +
           '</article>';
@@ -520,6 +624,7 @@
     function getProfile() {
       return {
         name: document.getElementById("buyerName").value || "Buyer",
+        address: document.getElementById("address").value || "home",
         neighborhood: document.getElementById("neighborhood").value,
         radius: Number(document.getElementById("radius").value),
         pickup: document.getElementById("pickup").value,
@@ -550,8 +655,8 @@
     function matchInventory(prompt) {
       const profile = getProfile();
       const intent = parseIntent(prompt);
-      addLog("Buyer Agent received: " + prompt);
-      addLog("Buyer Agent asks Inventory Agent for " + intent.diets.join("/") + " within " + profile.radius + " miles of " + profile.neighborhood + ".");
+      addLog("Fulli received: " + prompt);
+      addLog("Fulli asks Inventory Agent for " + intent.diets.join("/") + " within " + profile.radius + " miles of " + profile.address + ".");
       let results = inventory.filter(item => item.distance <= profile.radius || intent.weekend || intent.catering);
       if (intent.catering) {
         results = results.filter(item => item.labels.includes("Catering") || item.cadence === "advance");
@@ -580,10 +685,11 @@
       const top = results.slice(0, 4).map((item, index) => {
         const labels = item.labels.slice(0, 4).join(", ");
         return (index + 1) + ". " + item.seller + " - " + item.menu + "\n" +
-          "   " + item.area + " - " + item.distance + " mi - $" + item.price + " - " + item.pickup + "\n" +
+          "   " + item.distance + " mi from home - $" + item.price + " - " + item.pickup + "\n" +
+          "   Pickup: " + item.pickupAddress + "\n" +
           "   " + item.availability + " - " + labels + " - " + item.confidence + " confidence";
       }).join("\n\n");
-      return "Here are the best matches from today's inventory:\n\n" + top + "\n\nReply with a number to message the seller, reserve, or ask for alternatives.";
+      return "I found these for you. I prioritized strict diet match, distance from your home, pickup timing, and freshness.\n\n" + top + "\n\nReply with a number and I can draft the seller message, reserve, or show backups.";
     }
 
     function generateDigest() {
@@ -591,7 +697,7 @@
       const results = matchInventory("proactive digest for " + profile.diets.join(" ") + " near " + profile.neighborhood);
       const lines = results.slice(0, 3).map(item => "- " + item.seller + ": " + item.menu + " (" + item.pickup + ", " + item.distance + " mi)");
       const digest = "4 PM LocalPlate digest for " + profile.name + "\n" +
-        "Fresh matches near " + profile.neighborhood + ":\n" + lines.join("\n") +
+        "Fresh matches from " + profile.address + ":\n" + lines.join("\n") +
         "\n\nReply 1, 2, or 3 to message a seller. Reply 'more' to widen radius.";
       digestEl.textContent = digest;
       addMessage("agent", digest);
@@ -636,8 +742,8 @@
 
     document.getElementById("saveProfile").addEventListener("click", () => {
       const profile = getProfile();
-      addMessage("system", "Profile saved: " + profile.neighborhood + ", " + profile.radius + " miles, diet: " + profile.diets.join(", ") + ", cuisine: " + profile.cuisines.join(", "));
-      addLog("Buyer profile updated and available to concierge ranking.");
+      addMessage("system", "Profile saved: " + profile.address + ", " + profile.radius + " miles, diet: " + profile.diets.join(", ") + ", cuisine: " + profile.cuisines.join(", "));
+      addLog("Buyer profile updated with exact address and available to Fulli ranking.");
     });
 
     document.getElementById("runScan").addEventListener("click", () => {
@@ -650,7 +756,7 @@
 
     renderInventory();
     addLog("Initial mock inventory loaded from 7 configured sources.");
-    addMessage("agent", "Hi " + getProfile().name + ". Tell me what you want to eat and I will query today's neighborhood inventory. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
+    addMessage("agent", "Hi " + getProfile().name + ", I am Fulli from LocalPlate. Tell me what you want to eat and I will check today's neighborhood inventory from your home address. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
   </script>
 </body>
 </html>
