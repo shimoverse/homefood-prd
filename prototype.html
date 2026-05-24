@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LocalPlate + Fulli Agent Prototype</title>
+  <title>LocalPlate + Foodie Agent Prototype</title>
   <style>
     :root {
       --ink: #17211c;
@@ -362,8 +362,8 @@
     <div class="topbar">
       <div>
         <p class="eyebrow">Working Prototype</p>
-        <h1>LocalPlate + Fulli Agent</h1>
-        <p class="lead">A high-fidelity prototype where Fulli, the LocalPlate buyer agent, helps users find food inside WhatsApp while the inventory agent scans neighborhood sources, labels menus, and keeps daily supply fresh.</p>
+        <h1>LocalPlate + Foodie Agent</h1>
+        <p class="lead">A high-fidelity prototype where Foodie, the LocalPlate buyer agent, helps users find food inside WhatsApp while the inventory agent scans neighborhood sources, labels menus, and keeps daily supply fresh.</p>
       </div>
       <a href="./index.html">Back to PRD</a>
     </div>
@@ -435,7 +435,7 @@
       <div class="island"></div>
       <div class="chat">
         <div class="chat-head">
-          <div class="agent-title"><span class="agent-avatar">F</span><div><strong>Fulli Agent</strong><div class="status" id="agentStatus">LocalPlate concierge - online</div></div></div>
+          <div class="agent-title"><span class="agent-avatar">F</span><div><strong>Foodie Agent</strong><div class="status" id="agentStatus">LocalPlate concierge - online</div></div></div>
           <div class="status">WhatsApp</div>
         </div>
         <div class="messages" id="messages"></div>
@@ -450,7 +450,7 @@
           <button class="quick" data-action="source-proof">Source proof</button>
         </div>
           <div class="input-row">
-            <textarea id="prompt" placeholder="Message Fulli: Looking for veg dinner tonight from home..."></textarea>
+            <textarea id="prompt" placeholder="Message Foodie: Looking for veg dinner tonight from home..."></textarea>
             <button class="button" id="send">Send</button>
           </div>
         </div>
@@ -486,7 +486,7 @@
           <h2>Best match handoff</h2>
         </div>
         <div class="action-card" id="bestMatch">
-          <p>Ask Fulli for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>
+          <p>Ask Foodie for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>
         </div>
       </section>
 
@@ -507,7 +507,7 @@
               <div class="mini-field">Phone / WhatsApp: +1 *** *** 1282</div>
               <div class="mini-field">Home: Ellis Town Dr, Tracy</div>
               <div class="mini-field">Diet: Veg, Jain, no onion/garlic</div>
-              <div class="mini-field">CTA: Continue in WhatsApp with Fulli</div>
+              <div class="mini-field">CTA: Continue in WhatsApp with Foodie</div>
             </div>
           </div>
           <p>Production split: website captures durable profile and address; WhatsApp handles daily intent, alerts, and seller actions.</p>
@@ -515,7 +515,7 @@
       </section>
       <section class="panel blue stack">
         <div>
-          <p class="eyebrow">Fulli Personality</p>
+          <p class="eyebrow">Foodie Personality</p>
           <h2>Agent behavior</h2>
         </div>
         <p><strong>Tone:</strong> warm, practical, food-aware, never robotic.</p>
@@ -709,7 +709,7 @@
     function renderBestMatch(item) {
       const box = document.getElementById("bestMatch");
       if (!item) {
-        box.innerHTML = "<p>Ask Fulli for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>";
+        box.innerHTML = "<p>Ask Foodie for food to generate a best-match card with route, pickup address, seller draft, and source proof.</p>";
         return;
       }
       const profile = getProfile();
@@ -765,8 +765,8 @@
     function matchInventory(prompt) {
       const profile = getProfile();
       const intent = parseIntent(prompt);
-      addLog("Fulli received: " + prompt);
-      addLog("Fulli asks Inventory Agent for " + intent.diets.join("/") + " within " + profile.radius + " miles of " + profile.address + ".");
+      addLog("Foodie received: " + prompt);
+      addLog("Foodie asks Inventory Agent for " + intent.diets.join("/") + " within " + profile.radius + " miles of " + profile.address + ".");
       let results = inventory.filter(item => item.distance <= profile.radius || intent.weekend || intent.catering);
       if (intent.catering) {
         results = results.filter(item => item.labels.includes("Catering") || item.cadence === "advance");
@@ -841,7 +841,7 @@
       const profile = getProfile();
       addMessage("user", "Message #1");
       addMessage("agent", "Here is the draft I would send on WhatsApp:\n\nHi " + item.seller + ", I am interested in your " + item.menu.split(":")[0] + ". Is it still available for pickup from " + item.pickupAddress + "? I am coming from " + profile.address + " and need 2-4 servings.\n\nWant me to send, edit, or ask for pickup instructions?");
-      addLog("Fulli prepared seller handoff draft for " + item.seller + ".");
+      addLog("Foodie prepared seller handoff draft for " + item.seller + ".");
     }
 
     function showSourceProof() {
@@ -852,7 +852,7 @@
       }
       addMessage("user", "Show source proof for #1");
       addMessage("agent", "Source proof for " + item.seller + ":\n- Source type: " + item.source + "\n- Scan cadence: " + item.cadence + "\n- Extracted labels: " + item.labels.join(", ") + "\n- Confidence: " + item.confidence + "\n- Last seen: during latest area scan\n\nI would show the original menu snippet/image in production before strict diet matching.");
-      addLog("Fulli exposed source proof and label confidence for " + item.seller + ".");
+      addLog("Foodie exposed source proof and label confidence for " + item.seller + ".");
     }
 
     document.querySelectorAll(".chip").forEach(chip => {
@@ -882,7 +882,7 @@
     document.getElementById("saveProfile").addEventListener("click", () => {
       const profile = getProfile();
       addMessage("system", "Profile saved: " + profile.address + ", " + profile.radius + " miles, diet: " + profile.diets.join(", ") + ", cuisine: " + profile.cuisines.join(", "));
-      addLog("Buyer profile updated with exact address and available to Fulli ranking.");
+      addLog("Buyer profile updated with exact address and available to Foodie ranking.");
     });
 
     document.getElementById("runScan").addEventListener("click", () => {
@@ -896,7 +896,7 @@
     renderInventory();
     renderBestMatch(null);
     addLog("Initial mock inventory loaded from 7 configured sources.");
-    addMessage("agent", "Hi " + getProfile().name + ", I am Fulli from LocalPlate. Tell me what you want to eat and I will check today's neighborhood inventory from your home address. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
+    addMessage("agent", "Hi " + getProfile().name + ", I am Foodie from LocalPlate. Tell me what you want to eat and I will check today's neighborhood inventory from your home address. Try: Jain dinner tonight, South Indian options, vegan-friendly nearby, or catering next week.");
   </script>
 </body>
 </html>
