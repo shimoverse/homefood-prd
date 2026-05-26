@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 type Step = "start" | "phone" | "taste" | "ready";
 
 const foods = ["Jain", "Veg", "South Indian", "Gujarati", "Tiffin", "Snacks"];
+const featureChips = ["Verified cooks", "Diet match", "Pickup window", "Source proof"];
 
 function profileText(phone: string, location: string, choices: string[]) {
   return encodeURIComponent(
@@ -46,17 +47,67 @@ export function SimpleLanding() {
       <section className="simpleHero">
         <div className="heroCopy">
           <p className="simpleEyebrow">Tracy pilot</p>
-          <h1>Homemade Indian food, found by text.</h1>
-          <p>Tell Foodie what you want. It finds nearby home cooks, checks diet fit, and helps you confirm pickup in WhatsApp.</p>
+          <h1>Dinner from a trusted home cook, by text.</h1>
+          <p>Say what you want. Foodie finds a nearby plate, checks the details, and gets you to pickup without downloading another app.</p>
+          <div className="heroFeatureChips" aria-label="LocalPlate features">
+            {featureChips.map((chip) => <span key={chip}>{chip}</span>)}
+          </div>
+          <a className="heroStart" href="#join">Start in 30 seconds</a>
         </div>
 
-        <div className="phonePreview" aria-label="Foodie WhatsApp preview">
-          <div className="previewTop"><span>Foodie</span><small>LocalPlate</small></div>
-          <div className="previewBubble user">Jain dinner near me tonight?</div>
-          <div className="previewBubble agent">
-            Asha has verified Jain thali, 2.4 mi away, pickup 6-7:30 PM. Want me to ask for 3 plates?
+        <div className="iphonePreview" aria-label="Foodie iPhone preview">
+          <div className="iphoneBezel">
+            <div className="dynamicIsland" />
+            <div className="iosStatus"><span>9:41</span><span>5G 100%</span></div>
+            <div className="appHeader">
+              <div>
+                <strong>Foodie</strong>
+                <span>LocalPlate concierge</span>
+              </div>
+              <small>LIVE</small>
+            </div>
+
+            <div className="chatCanvas">
+              <div className="previewBubble user">Jain dinner near me tonight?</div>
+              <div className="previewBubble agent">
+                I found a verified Jain thali from Asha, 2.4 mi away. Pickup is open 6:00-7:30 PM.
+              </div>
+
+              <div className="foodCard">
+                <div className="dishPhoto" aria-hidden="true">
+                  <span />
+                </div>
+                <div className="dishDetails">
+                  <div>
+                    <strong>Asha's Jain Thali</strong>
+                    <small>2.4 mi • pickup tonight</small>
+                  </div>
+                  <p>Roti, dal, rice, shaak, pickle. No onion, no garlic.</p>
+                  <div className="proofGrid">
+                    <span>Verified kitchen</span>
+                    <span>Diet confirmed</span>
+                    <span>Source proof</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="quickActions" aria-label="Suggested actions">
+                <button>Ask for 3 plates</button>
+                <button>Show pickup</button>
+              </div>
+
+              <div className="miniTimeline">
+                <span className="done">Request</span>
+                <span className="done">Match</span>
+                <span>Pickup</span>
+              </div>
+            </div>
+
+            <div className="composer">
+              <span>Message Foodie</span>
+              <button aria-label="Send message">Send</button>
+            </div>
           </div>
-          <div className="previewProof">source proof + pickup details included</div>
         </div>
       </section>
 
