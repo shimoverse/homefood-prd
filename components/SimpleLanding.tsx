@@ -6,6 +6,7 @@ type Step = "start" | "phone" | "taste" | "ready";
 
 const foods = ["Jain", "Veg", "South Indian", "Gujarati", "Tiffin", "Snacks"];
 const featureChips = ["Verified cooks", "Diet match", "Pickup window", "Source proof"];
+const menuFeatures = ["Jain-safe", "3 plates left", "6:00-7:30 PM", "2.4 mi"];
 
 function profileText(phone: string, location: string, choices: string[]) {
   return encodeURIComponent(
@@ -55,22 +56,39 @@ export function SimpleLanding() {
           <a className="heroStart" href="#join">Start in 30 seconds</a>
         </div>
 
-        <div className="iphonePreview" aria-label="Foodie iPhone preview">
+        <div className="iphonePreview" aria-label="Foodie WhatsApp iPhone preview">
           <div className="iphoneBezel">
             <div className="dynamicIsland" />
             <div className="iosStatus"><span>9:41</span><span>5G 100%</span></div>
             <div className="appHeader">
-              <div>
-                <strong>Foodie</strong>
-                <span>LocalPlate concierge</span>
+              <div className="waContact">
+                <span className="waBack">‹</span>
+                <span className="waAvatar">F</span>
+                <div>
+                  <strong>Foodie</strong>
+                  <span>online</span>
+                </div>
               </div>
-              <small>LIVE</small>
+              <div className="waHeaderActions" aria-label="WhatsApp actions">
+                <span />
+                <span />
+                <span />
+              </div>
             </div>
 
             <div className="chatCanvas">
-              <div className="previewBubble user">Jain dinner near me tonight?</div>
+              <div className="waDate">Today</div>
+              <div className="previewBubble agent intro">
+                Hi Rohan. I have your Tracy profile and Jain/veg rules saved. What should I find tonight?
+                <span className="bubbleTime">6:11 PM</span>
+              </div>
+              <div className="previewBubble user">
+                Jain dinner near me tonight?
+                <span className="bubbleTime">6:12 PM ✓✓</span>
+              </div>
               <div className="previewBubble agent">
-                I found a verified Jain thali from Asha, 2.4 mi away. Pickup is open 6:00-7:30 PM.
+                Found one strong match. Verified Jain thali from Asha, 2.4 mi away. Pickup is open 6:00-7:30 PM.
+                <span className="bubbleTime">6:12 PM</span>
               </div>
 
               <div className="foodCard">
@@ -80,32 +98,28 @@ export function SimpleLanding() {
                 <div className="dishDetails">
                   <div>
                     <strong>Asha's Jain Thali</strong>
-                    <small>2.4 mi • pickup tonight</small>
+                    <small>Pickup tonight</small>
                   </div>
                   <p>Roti, dal, rice, shaak, pickle. No onion, no garlic.</p>
-                  <div className="proofGrid">
-                    <span>Verified kitchen</span>
-                    <span>Diet confirmed</span>
-                    <span>Source proof</span>
+                  <div className="menuFeatureGrid">
+                    {menuFeatures.map((feature) => <span key={feature}>{feature}</span>)}
+                  </div>
+                  <div className="proofLine">
+                    <span /> Verified kitchen + source photo checked
                   </div>
                 </div>
               </div>
 
               <div className="quickActions" aria-label="Suggested actions">
-                <button>Ask for 3 plates</button>
+                <button>Reserve 3 plates</button>
                 <button>Show pickup</button>
-              </div>
-
-              <div className="miniTimeline">
-                <span className="done">Request</span>
-                <span className="done">Match</span>
-                <span>Pickup</span>
               </div>
             </div>
 
             <div className="composer">
-              <span>Message Foodie</span>
-              <button aria-label="Send message">Send</button>
+              <span className="composerPlus">+</span>
+              <span className="composerField">Message</span>
+              <span className="composerMic" aria-label="Voice message" />
             </div>
           </div>
         </div>
