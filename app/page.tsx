@@ -1,5 +1,5 @@
-import { LocalPlateApp } from "@/components/LocalPlateApp";
+import { BuyerOnboarding } from "@/components/BuyerOnboarding";
 
 export default function Page() {
-  return <LocalPlateApp />;
+  return <BuyerOnboarding />;
 }
