@@ -714,3 +714,240 @@ textarea { min-height: 64px; resize: vertical; }
   .messages { max-height: 540px; }
   .bubble { max-width: 96%; }
 }
+
+.simpleLanding {
+  background: #fbfaf6;
+  color: #101611;
+  min-height: 100vh;
+  padding: 22px;
+}
+.simpleNav {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1120px;
+}
+.simpleNav strong { font-size: 1.05rem; }
+.simpleNav a {
+  background: #fff;
+  border: 1px solid #e3e0d8;
+  border-radius: 999px;
+  color: #174232;
+  padding: 10px 14px;
+}
+.simpleHero {
+  align-items: center;
+  display: grid;
+  gap: 46px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  margin: 58px auto 34px;
+  max-width: 1120px;
+}
+.heroCopy {
+  display: grid;
+  gap: 18px;
+}
+.simpleEyebrow {
+  color: #c66b22;
+  font-size: .78rem;
+  font-weight: 1000;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.heroCopy h1 {
+  font-size: clamp(3rem, 7vw, 6.8rem);
+  letter-spacing: 0;
+  line-height: .92;
+  max-width: 820px;
+}
+.heroCopy p:not(.simpleEyebrow) {
+  color: #4d5a52;
+  font-size: 1.22rem;
+  max-width: 640px;
+}
+.phonePreview {
+  background: #0b0f0d;
+  border: 9px solid #0b0f0d;
+  border-radius: 38px;
+  box-shadow: 0 30px 80px rgba(16, 22, 17, .22);
+  display: grid;
+  gap: 12px;
+  min-height: 520px;
+  padding: 18px 14px 24px;
+}
+.previewTop {
+  align-items: center;
+  background: #075e54;
+  border-radius: 26px 26px 10px 10px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px;
+}
+.previewTop span { font-weight: 1000; }
+.previewTop small { color: rgba(255,255,255,.72); font-weight: 900; }
+.previewBubble {
+  border-radius: 16px;
+  font-size: .96rem;
+  line-height: 1.35;
+  padding: 12px 14px;
+}
+.previewBubble.user {
+  background: #dcf8c6;
+  justify-self: end;
+  max-width: 78%;
+}
+.previewBubble.agent {
+  background: #fff;
+  justify-self: start;
+  max-width: 88%;
+}
+.previewProof {
+  align-self: end;
+  background: rgba(255,255,255,.12);
+  border-radius: 999px;
+  color: rgba(255,255,255,.78);
+  font-size: .78rem;
+  font-weight: 900;
+  justify-self: center;
+  padding: 8px 12px;
+}
+.simpleOnboarding {
+  background: #fff;
+  border: 1px solid #e3e0d8;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(16, 22, 17, .10);
+  margin: 0 auto;
+  max-width: 640px;
+  padding: 18px;
+}
+.progressDots {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.progressDots span {
+  background: #d9ded6;
+  border-radius: 999px;
+  height: 8px;
+  width: 28px;
+}
+.progressDots span.active { background: #2f6f4f; }
+.stepCard {
+  display: grid;
+  gap: 16px;
+  min-height: 280px;
+  place-content: center;
+  text-align: center;
+}
+.stepCard h2 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: .98;
+}
+.stepCard p {
+  color: #657268;
+  font-size: 1.05rem;
+  margin: 0 auto;
+  max-width: 420px;
+}
+.stepCard label {
+  color: #465249;
+  font-size: .88rem;
+  text-align: left;
+}
+.simplePrimary {
+  align-items: center;
+  background: #2f6f4f;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-weight: 1000;
+  justify-content: center;
+  justify-self: center;
+  min-height: 52px;
+  min-width: 210px;
+  padding: 0 22px;
+}
+.simplePrimary:disabled {
+  cursor: default;
+  opacity: .45;
+}
+.simpleGhost {
+  background: transparent;
+  border: 0;
+  color: #174232;
+  font-weight: 1000;
+}
+.choiceGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.choiceGrid button {
+  background: #f7f6f1;
+  border: 1px solid #e3e0d8;
+  border-radius: 999px;
+  color: #174232;
+  font-weight: 1000;
+  min-height: 46px;
+}
+.choiceGrid button.selected {
+  background: #e8f3eb;
+  border-color: #8fbea0;
+}
+.readyCard {
+  min-height: 320px;
+}
+.simpleHow {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 28px auto 0;
+  max-width: 900px;
+}
+.simpleHow article {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e3e0d8;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+}
+.simpleHow strong {
+  align-items: center;
+  background: #4a334f;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+.simpleHow span { color: #38463d; font-weight: 900; }
+
+@media (max-width: 860px) {
+  .simpleHero {
+    grid-template-columns: 1fr;
+    margin-top: 36px;
+  }
+  .phonePreview {
+    min-height: 420px;
+    max-width: 360px;
+    width: 100%;
+  }
+  .simpleHow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .simpleLanding { padding: 16px; }
+  .simpleHero { gap: 28px; }
+  .choiceGrid { grid-template-columns: repeat(2, 1fr); }
+  .stepCard { min-height: 320px; }
+}
