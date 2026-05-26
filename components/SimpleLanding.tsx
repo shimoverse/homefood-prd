@@ -14,7 +14,7 @@ function profileText(phone: string, location: string, choices: string[]) {
       ". I am near " +
       location +
       ". I am looking for " +
-      (choices.length ? choices.join(", ") : "homemade Indian food") +
+      (choices.length ? choices.join(", ") : "homemade food") +
       " near me tonight."
   );
 }
@@ -47,7 +47,7 @@ export function SimpleLanding() {
       <section className="simpleHero">
         <div className="heroCopy">
           <p className="simpleEyebrow">Tracy pilot</p>
-          <h1>Dinner from a trusted home cook, by text.</h1>
+          <h1>Homemade food, available near you.</h1>
           <p>Say what you want. Foodie finds a nearby plate, checks the details, and gets you to pickup without downloading another app.</p>
           <div className="heroFeatureChips" aria-label="LocalPlate features">
             {featureChips.map((chip) => <span key={chip}>{chip}</span>)}

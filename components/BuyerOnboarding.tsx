@@ -69,7 +69,7 @@ export function BuyerOnboarding() {
         <section className="buyerHeroGrid">
           <div>
             <p className="eyebrow">Now launching in Tracy</p>
-            <h1>Text Foodie to find homemade Indian food near you tonight.</h1>
+            <h1>Homemade food, available near you.</h1>
             <p className="lead">LocalPlate remembers your diet rules, checks nearby home cooks, shows source proof, and helps you confirm pickup in WhatsApp.</p>
             <div className="heroCtas">
               <a className="primary" href="#signup">Join as Rohan</a>
