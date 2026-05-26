@@ -120,7 +120,7 @@ export function SimpleLanding() {
 
         {step === "start" && (
           <div className="stepCard">
-            <h2>Want tonight's homemade options?</h2>
+            <h2>Explore today's homemade options?</h2>
             <p>No app. No menu hunting. Start with one WhatsApp message.</p>
             <button className="simplePrimary" onClick={() => setStep("phone")}>Start</button>
           </div>
