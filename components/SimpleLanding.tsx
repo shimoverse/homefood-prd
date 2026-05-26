@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 type Step = "start" | "phone" | "taste" | "ready";
 
 const foods = ["Jain", "Veg", "South Indian", "Gujarati", "Tiffin", "Snacks"];
-const featureChips = ["Verified cooks", "Diet match", "Pickup window", "Source proof"];
+const featureChips = ["Verified home cooks", "Diet-safe matches", "Live pickup slots", "WhatsApp pickup"];
 const menuFeatures = ["Jain-safe", "3 plates left", "6:00-7:30 PM", "2.4 mi"];
 
 function profileText(phone: string, location: string, choices: string[]) {
@@ -18,6 +18,36 @@ function profileText(phone: string, location: string, choices: string[]) {
       (choices.length ? choices.join(", ") : "homemade food") +
       " near me tonight."
   );
+}
+
+function Icon({ name }: { name: "video" | "phone" | "more" | "mic" | "plus" | "check" | "pin" }) {
+  const common = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+  if (name === "video") {
+    return <svg {...common} aria-hidden="true"><path d="M15 10.5 20 7v10l-5-3.5V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3.5Z" /></svg>;
+  }
+
+  if (name === "phone") {
+    return <svg {...common} aria-hidden="true"><path d="M22 16.92v2.4a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 3.6 2 2 0 0 1 4.11 1.4h2.4a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.8a2 2 0 0 1-.45 2.11L7.7 9.05a16 16 0 0 0 7.25 7.25l1.02-1.02a2 2 0 0 1 2.11-.45c.9.31 1.84.53 2.8.66A2 2 0 0 1 22 16.92Z" /></svg>;
+  }
+
+  if (name === "more") {
+    return <svg {...common} aria-hidden="true"><path d="M12 8h.01" /><path d="M12 12h.01" /><path d="M12 16h.01" /></svg>;
+  }
+
+  if (name === "mic") {
+    return <svg {...common} aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><path d="M12 19v3" /></svg>;
+  }
+
+  if (name === "plus") {
+    return <svg {...common} aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>;
+  }
+
+  if (name === "pin") {
+    return <svg {...common} aria-hidden="true"><path d="M12 21s7-4.4 7-11a7 7 0 1 0-14 0c0 6.6 7 11 7 11Z" /><path d="M12 10.5h.01" /></svg>;
+  }
+
+  return <svg {...common} aria-hidden="true"><path d="m20 6-11 11-5-5" /></svg>;
 }
 
 export function SimpleLanding() {
@@ -48,8 +78,8 @@ export function SimpleLanding() {
       <section className="simpleHero">
         <div className="heroCopy">
           <p className="simpleEyebrow">Tracy pilot</p>
-          <h1>Homemade food, available near you.</h1>
-          <p>Say what you want. Foodie finds a nearby plate, checks the details, and gets you to pickup without downloading another app.</p>
+          <h1>Home-cooked food near you, found by text.</h1>
+          <p>Tell Foodie what you can eat. It checks trusted nearby home cooks, verifies the details, and gets you to pickup in WhatsApp.</p>
           <div className="heroFeatureChips" aria-label="LocalPlate features">
             {featureChips.map((chip) => <span key={chip}>{chip}</span>)}
           </div>
@@ -62,7 +92,7 @@ export function SimpleLanding() {
             <div className="iosStatus"><span>9:41</span><span>5G 100%</span></div>
             <div className="appHeader">
               <div className="waContact">
-                <span className="waBack">‹</span>
+                <span className="waBack" aria-hidden="true">‹</span>
                 <span className="waAvatar">F</span>
                 <div>
                   <strong>Foodie</strong>
@@ -70,16 +100,16 @@ export function SimpleLanding() {
                 </div>
               </div>
               <div className="waHeaderActions" aria-label="WhatsApp actions">
-                <span />
-                <span />
-                <span />
+                <button type="button" aria-label="Video call"><Icon name="video" /></button>
+                <button type="button" aria-label="Call"><Icon name="phone" /></button>
+                <button type="button" aria-label="More options"><Icon name="more" /></button>
               </div>
             </div>
 
             <div className="chatCanvas">
               <div className="waDate">Today</div>
               <div className="previewBubble agent intro">
-                Hi Rohan. I have your Tracy profile and Jain/veg rules saved. What should I find tonight?
+                Hi Rohan. I saved your Tracy profile, Jain/veg rules, and 8-mile pickup radius. What should I find tonight?
                 <span className="bubbleTime">6:11 PM</span>
               </div>
               <div className="previewBubble user">
@@ -87,13 +117,16 @@ export function SimpleLanding() {
                 <span className="bubbleTime">6:12 PM ✓✓</span>
               </div>
               <div className="previewBubble agent">
-                Found one strong match. Verified Jain thali from Asha, 2.4 mi away. Pickup is open 6:00-7:30 PM.
+                Best match: verified Jain thali from Asha, 2.4 miles away. Pickup is open 6:00-7:30 PM.
                 <span className="bubbleTime">6:12 PM</span>
               </div>
 
               <div className="foodCard">
                 <div className="dishPhoto" aria-hidden="true">
-                  <span />
+                  <span className="plate roti" />
+                  <span className="plate dal" />
+                  <span className="plate shaak" />
+                  <span className="dishLabel">Fresh thali</span>
                 </div>
                 <div className="dishDetails">
                   <div>
@@ -105,9 +138,14 @@ export function SimpleLanding() {
                     {menuFeatures.map((feature) => <span key={feature}>{feature}</span>)}
                   </div>
                   <div className="proofLine">
-                    <span /> Verified kitchen + source photo checked
+                    <span><Icon name="check" /></span> Verified kitchen + source photo checked
                   </div>
                 </div>
+              </div>
+
+              <div className="pickupSheet">
+                <div><Icon name="pin" /><span>Pickup near Grant Line Rd</span></div>
+                <strong>$14/plate</strong>
               </div>
 
               <div className="quickActions" aria-label="Suggested actions">
@@ -117,9 +155,9 @@ export function SimpleLanding() {
             </div>
 
             <div className="composer">
-              <span className="composerPlus">+</span>
+              <span className="composerPlus"><Icon name="plus" /></span>
               <span className="composerField">Message</span>
-              <span className="composerMic" aria-label="Voice message" />
+              <span className="composerMic" aria-label="Voice message"><Icon name="mic" /></span>
             </div>
           </div>
         </div>
@@ -134,7 +172,7 @@ export function SimpleLanding() {
 
         {step === "start" && (
           <div className="stepCard">
-            <h2>Explore today's homemade options?</h2>
+            <h2>Explore tonight's homemade options?</h2>
             <p>No app. No menu hunting. Start with one WhatsApp message.</p>
             <button className="simplePrimary" onClick={() => setStep("phone")}>Start</button>
           </div>
