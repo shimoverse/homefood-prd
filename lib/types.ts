@@ -16,6 +16,48 @@ export type BuyerProfile = {
   consentNote?: string;
 };
 
+export type PersistedUser = {
+  id: string;
+  phone: string;
+  name: string;
+  createdAt: string;
+  lastSeenAt: string;
+};
+
+export type SavedBuyerProfile = BuyerProfile & {
+  id: string;
+  userId: string;
+  token: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ConversationTurn = {
+  id: string;
+  sender: "buyer" | "foodie" | "system";
+  text: string;
+  createdAt: string;
+};
+
+export type BuyerConversation = {
+  id: string;
+  userId: string;
+  profileId: string;
+  channel: "whatsapp" | "web";
+  state: "onboarded" | "searching" | "handoff" | "watching";
+  turns: ConversationTurn[];
+  lastIntent?: string;
+  lastDropIds: string[];
+  updatedAt: string;
+};
+
+export type LocalPlateDatabase = {
+  users: PersistedUser[];
+  profiles: SavedBuyerProfile[];
+  conversations: BuyerConversation[];
+  menuDrops: Drop[];
+};
+
 export type ReviewState = "new" | "contacted" | "proof-needed" | "approved" | "rejected";
 
 export type Source = {

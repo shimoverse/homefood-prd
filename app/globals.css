@@ -37,7 +37,7 @@ a { color: var(--leaf-2); font-weight: 900; text-decoration: none; }
 .page { max-width: 1440px; width: calc(100% - 36px); margin: 0 auto; padding: 28px 0 48px; }
 .buyerPage { max-width: 1280px; width: calc(100% - 36px); margin: 0 auto; padding: 28px 0 52px; }
 .hero { align-items: flex-end; display: flex; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
-.buyerHero { display: grid; gap: 44px; margin-bottom: 24px; }
+.buyerHero { display: grid; gap: 28px; margin-bottom: 24px; }
 .buyerHero nav {
   align-items: center;
   display: flex;
@@ -70,6 +70,37 @@ h3 { font-size: 1.05rem; }
   gap: 22px;
   grid-template-columns: minmax(0, 1fr) 340px;
 }
+.conversionHero {
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
+  min-height: 560px;
+}
+.heroCopy {
+  align-content: center;
+  display: grid;
+  min-height: 500px;
+  padding: 14px 0;
+}
+.heroCopy h1 {
+  font-size: clamp(2.35rem, 4.4vw, 4.55rem);
+  max-width: 920px;
+}
+.trustBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.trustBar span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--leaf-2);
+  font-size: .84rem;
+  font-weight: 1000;
+  min-height: 34px;
+  padding: 7px 12px;
+}
 .heroCtas {
   display: flex;
   flex-wrap: wrap;
@@ -77,6 +108,28 @@ h3 { font-size: 1.05rem; }
   margin-top: 22px;
 }
 .heroCtas .secondary { width: auto; }
+.heroPrimary {
+  box-shadow: 0 12px 26px rgba(47, 111, 79, .24);
+  min-height: 50px;
+  padding-inline: 22px;
+}
+.microCopy {
+  color: var(--muted);
+  font-size: .9rem;
+  font-weight: 800;
+  margin-top: 12px;
+}
+.heroSignup {
+  align-self: start;
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 18px;
+}
+.quickSignup {
+  display: grid;
+  gap: 12px;
+}
 .buyerPromise {
   background: #fff;
   border: 1px solid var(--line);
@@ -132,6 +185,36 @@ h3 { font-size: 1.05rem; }
   text-transform: uppercase;
 }
 .valueStrip p { color: var(--muted); }
+.valueStrip em {
+  color: var(--leaf-2);
+  font-size: .84rem;
+  font-style: normal;
+  font-weight: 1000;
+}
+.liveMatches {
+  margin-top: -8px;
+}
+
+.objectionGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 0 18px;
+}
+.objectionGrid article {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+.objectionGrid strong {
+  font-size: 1rem;
+}
+.objectionGrid p {
+  color: var(--muted);
+}
 
 .buyerGrid {
   align-items: start;
@@ -139,11 +222,113 @@ h3 { font-size: 1.05rem; }
   gap: 16px;
   grid-template-columns: minmax(360px, 1.15fr) minmax(310px, .9fr) 300px;
 }
+.detailSignup {
+  margin-top: 18px;
+}
 .onboardingForm { display: grid; gap: 13px; }
+.formHint {
+  color: var(--muted);
+  font-size: .92rem;
+  margin-top: 8px;
+}
+.presetBlock {
+  display: grid;
+  gap: 8px;
+}
+.presetBlock > span {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.presetRow button {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--leaf-2);
+  font-size: .86rem;
+  font-weight: 1000;
+  min-height: 36px;
+  padding: 0 12px;
+}
+.presetRow button.selected {
+  background: var(--mint);
+  border-color: #9bc9a9;
+  color: var(--leaf-2);
+}
+.statusLine {
+  background: var(--blue);
+  border: 1px solid #d4e2ff;
+  border-radius: 8px;
+  color: #26415f;
+  font-size: .9rem;
+  font-weight: 800;
+  padding: 10px 12px;
+}
+.advancedProfile {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+.advancedProfile summary {
+  color: var(--leaf-2);
+  cursor: pointer;
+  font-weight: 1000;
+}
+.advancedProfile label {
+  margin-top: 10px;
+}
 .formSplit { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
 .invitePanel {
   display: grid;
   gap: 14px;
+}
+.whatsAppPreview {
+  background: #f1f8f3;
+  border: 1px solid #bfdbc7;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  min-height: 210px;
+  padding: 18px;
+}
+.whatsAppPreview strong {
+  color: var(--leaf-2);
+  font-size: 1.1rem;
+}
+.whatsAppPreview span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: #38463d;
+  font-weight: 850;
+  padding: 12px;
+}
+.testAgent {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+}
+.foodieReply {
+  background: #102018;
+  border-radius: 8px;
+  color: #edf7ef;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .82rem;
+  line-height: 1.45;
+  margin: 0;
+  max-height: 320px;
+  overflow: auto;
+  padding: 12px;
+  white-space: pre-wrap;
 }
 .largeQr {
   background: #fff;
@@ -344,6 +529,46 @@ input, select, textarea {
   width: 100%;
 }
 textarea { min-height: 64px; resize: vertical; }
+.addressAutocomplete {
+  position: relative;
+}
+.addressMenu {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(23, 33, 28, .16);
+  display: grid;
+  left: 0;
+  max-height: 236px;
+  overflow-y: auto;
+  padding: 6px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 20;
+}
+.addressMenu button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: .88rem;
+  font-weight: 850;
+  line-height: 1.25;
+  min-height: 40px;
+  padding: 9px 10px;
+  text-align: left;
+}
+.addressMenu button:hover,
+.addressMenu button.active {
+  background: var(--mint);
+  color: var(--leaf-2);
+}
+.addressLoading {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 850;
+}
 .miniSite { background: var(--blue); border: 1px solid #cbdaf5; border-radius: 8px; display: grid; gap: 6px; padding: 12px; }
 .miniSite span, .panel p, .listingCard span, .routeCard span { color: var(--muted); }
 .payloadCard {
@@ -707,11 +932,17 @@ textarea { min-height: 64px; resize: vertical; }
   .launchMetrics { grid-template-columns: repeat(2, 1fr); }
   .qrLayout { grid-template-columns: auto 1fr; }
   .scenarioPanel { order: 3; }
+  .conversionHero { min-height: auto; }
+  .heroCopy { min-height: auto; }
+  .heroSignup { position: static; }
 }
 @media (max-width: 680px) {
   .page, .buyerPage { width: calc(100% - 24px); }
   .hero { align-items: start; display: grid; }
-  .flowStrip, .heroActions, .heroCtas, .valueStrip, .metricGrid, .handoffSteps, .formSplit, .launchMetrics { display: grid; grid-template-columns: 1fr; }
+  .flowStrip, .heroActions, .heroCtas, .valueStrip, .objectionGrid, .metricGrid, .handoffSteps, .formSplit, .launchMetrics { display: grid; grid-template-columns: 1fr; }
+  .buyerHero { gap: 18px; }
+  .heroCopy { padding: 4px 0; }
+  .heroCtas .secondary, .heroCtas .primary { width: 100%; }
   .launchHeader { align-items: start; display: grid; }
   .qrLayout { align-items: start; grid-template-columns: 1fr; }
   .phoneShell { border-width: 7px; border-radius: 38px; height: 828px; max-width: 390px; }

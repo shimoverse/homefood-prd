@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 
 type Step = "start" | "phone" | "taste" | "ready";
 
@@ -13,7 +14,7 @@ function profileText(phone: string, location: string, choices: string[]) {
     "Hi Foodie, I want to join LocalPlate. My WhatsApp is " +
       phone +
       ". I am near " +
-      location +
+      (location.trim() || "Tracy") +
       ". I am looking for " +
       (choices.length ? choices.join(", ") : "homemade food") +
       " near me tonight."
@@ -53,10 +54,10 @@ function Icon({ name }: { name: "video" | "phone" | "more" | "mic" | "plus" | "c
 export function SimpleLanding() {
   const [step, setStep] = useState<Step>("start");
   const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("Tracy");
+  const [location, setLocation] = useState("");
   const [choices, setChoices] = useState<string[]>(["Jain", "Veg"]);
 
-  const canContinue = phone.trim().length >= 7;
+  const canContinue = phone.trim().length >= 7 && location.trim().length >= 3;
   const whatsappHref = useMemo(
     () => "https://wa.me/918097244384?text=" + profileText(phone, location, choices),
     [phone, location, choices]
@@ -185,15 +186,12 @@ export function SimpleLanding() {
               WhatsApp number
               <input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+1 408 555 1234" autoFocus />
             </label>
-            <label>
-              Area
-              <select value={location} onChange={(event) => setLocation(event.target.value)}>
-                <option>Tracy</option>
-                <option>Mountain House</option>
-                <option>Lathrop</option>
-                <option>Dublin</option>
-              </select>
-            </label>
+            <AddressAutocomplete
+              label="Street address"
+              value={location}
+              onChange={(address) => setLocation(address)}
+              placeholder="Start typing your street address"
+            />
             <button className="simplePrimary" disabled={!canContinue}>Continue</button>
           </form>
         )}
