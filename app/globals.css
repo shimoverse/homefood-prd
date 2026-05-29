@@ -81,13 +81,13 @@ h3 { font-size: 1.05rem; }
   min-height: 500px;
   padding: 14px 0;
 }
-.heroCopy h1 {
+.conversionHero .heroCopy h1 {
   color: #173327;
-  font-size: clamp(2.15rem, 3.7vw, 3.8rem);
-  font-weight: 650;
+  font-size: clamp(2rem, 3.3vw, 3.35rem);
+  font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.04;
-  max-width: 920px;
+  line-height: 1.08;
+  max-width: 820px;
 }
 .trustBar {
   display: flex;
@@ -994,12 +994,12 @@ textarea { min-height: 64px; resize: vertical; }
   letter-spacing: .12em;
   text-transform: uppercase;
 }
-.heroCopy h1 {
+.simpleLanding .heroCopy h1 {
   color: #173327;
-  font-size: clamp(2.45rem, 5.6vw, 5.25rem);
-  font-weight: 650;
+  font-size: clamp(2.35rem, 5vw, 4.65rem);
+  font-weight: 600;
   letter-spacing: 0;
-  line-height: 1;
+  line-height: 1.04;
   max-width: 760px;
 }
 .heroCopy p:not(.simpleEyebrow) {
