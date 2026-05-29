@@ -9,6 +9,8 @@ type AddressSuggestion = {
   city: string;
   lat: string;
   lon: string;
+  source?: string;
+  detail?: string;
 };
 
 type AddressAutocompleteProps = {
@@ -21,17 +23,26 @@ type AddressAutocompleteProps = {
 export function AddressAutocomplete({ label, value, onChange, placeholder }: AddressAutocompleteProps) {
   const listboxId = useId();
   const wrapperRef = useRef<HTMLLabelElement | null>(null);
+  const chosenValueRef = useRef("");
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     const query = value.trim();
+    if (query && query === chosenValueRef.current) {
+      setLoading(false);
+      setNoResults(false);
+      return;
+    }
+
     if (query.length < 3) {
       setSuggestions([]);
       setOpen(false);
       setLoading(false);
+      setNoResults(false);
       return;
     }
 
@@ -46,11 +57,13 @@ export function AddressAutocomplete({ label, value, onChange, placeholder }: Add
         const nextSuggestions = payload.suggestions ?? [];
         setSuggestions(nextSuggestions);
         setOpen(nextSuggestions.length > 0);
+        setNoResults(nextSuggestions.length === 0);
         setActiveIndex(nextSuggestions.length > 0 ? 0 : -1);
       } catch (error) {
         if (!(error instanceof DOMException && error.name === "AbortError")) {
           setSuggestions([]);
           setOpen(false);
+          setNoResults(true);
         }
       } finally {
         if (!controller.signal.aborted) setLoading(false);
@@ -75,8 +88,10 @@ export function AddressAutocomplete({ label, value, onChange, placeholder }: Add
   }, []);
 
   function choose(suggestion: AddressSuggestion) {
+    chosenValueRef.current = suggestion.value;
     onChange(suggestion.value, suggestion);
     setOpen(false);
+    setNoResults(false);
     setActiveIndex(-1);
   }
 
@@ -89,7 +104,11 @@ export function AddressAutocomplete({ label, value, onChange, placeholder }: Add
         aria-expanded={open}
         role="combobox"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => {
+          chosenValueRef.current = "";
+          setNoResults(false);
+          onChange(event.target.value);
+        }}
         onFocus={() => setOpen(suggestions.length > 0)}
         onKeyDown={(event) => {
           if (!open && event.key === "ArrowDown" && suggestions.length > 0) {
@@ -114,7 +133,8 @@ export function AddressAutocomplete({ label, value, onChange, placeholder }: Add
         }}
         placeholder={placeholder}
       />
-      {loading && <span className="addressLoading">Searching OpenStreetMap...</span>}
+      {loading && <span className="addressLoading">Searching addresses...</span>}
+      {noResults && !loading && <span className="addressLoading">No exact match yet. Keep typing the street and city.</span>}
       {open && (
         <div className="addressMenu" id={listboxId} role="listbox">
           {suggestions.map((suggestion, index) => (
@@ -127,7 +147,8 @@ export function AddressAutocomplete({ label, value, onChange, placeholder }: Add
               role="option"
               type="button"
             >
-              {suggestion.label}
+              <strong>{suggestion.label}</strong>
+              {suggestion.detail && <span>{suggestion.detail}</span>}
             </button>
           ))}
         </div>
